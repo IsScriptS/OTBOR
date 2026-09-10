@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>СБОРНИК By: Branckes 🎵</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0a0014;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Аниме-фон с частицами */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(155, 89, 182, 0.25), transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(142, 68, 173, 0.25), transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(88, 24, 130, 0.15), transparent 60%);
+      z-index: -2;
+      animation: bgPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes bgPulse {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+
+    /* Звёзды / частицы */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1.5px 1.5px at 15% 20%, #b06bff, transparent),
+        radial-gradient(1.5px 1.5px at 40% 60%, #9b59b6, transparent),
+        radial-gradient(2px 2px at 70% 30%, #d29bff, transparent),
+        radial-gradient(1.5px 1.5px at 85% 80%, #8e44ad, transparent),
+        radial-gradient(1.5px 1.5px at 55% 15%, #c39bff, transparent),
+        radial-gradient(2px 2px at 25% 85%, #a569bd, transparent),
+        radial-gradient(1.5px 1.5px at 90% 50%, #b06bff, transparent);
+      z-index: -1;
+      animation: twinkle 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    /* ===== БЛЁСТКИ, РАЗБРОСАННЫЕ ПО ФОНУ ===== */
+    .sparkles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .sparkle {
+      position: absolute;
+      background: radial-gradient(circle, #fff 0%, #d29bff 40%, transparent 70%);
+      border-radius: 50%;
+      box-shadow: 0 0 8px #b06bff, 0 0 16px rgba(178, 102, 255, 0.7);
+      animation: sparkleAnim 3s ease-in-out infinite;
+      opacity: 0;
+    }
+
+    /* Маленькие блёстки */
+    .sparkle.small {
+      width: 3px;
+      height: 3px;
+    }
+
+    /* Средние */
+    .sparkle.medium {
+      width: 5px;
+      height: 5px;
+    }
+
+    /* Крупные */
+    .sparkle.big {
+      width: 7px;
+      height: 7px;
+      box-shadow: 0 0 12px #d29bff, 0 0 24px rgba(178, 102, 255, 0.9);
+    }
+
+    /* Звёздочка-крестик (как в аниме) */
+    .sparkle.star {
+      background: transparent;
+      border-radius: 0;
+      width: 10px;
+      height: 10px;
+      box-shadow: none;
+    }
+
+    .sparkle.star::before,
+    .sparkle.star::after {
+      content: '';
+      position: absolute;
+      background: linear-gradient(90deg, transparent, #fff, transparent);
+      box-shadow: 0 0 6px #d29bff;
+    }
+
+    .sparkle.star::before {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      transform: translateY(-50%);
+    }
+
+    .sparkle.star::after {
+      left: 50%;
+      top: 0;
+      height: 100%;
+      width: 1.5px;
+      transform: translateX(-50%);
+    }
+
+    @keyframes sparkleAnim {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0.3);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+
+    /* Лёгкое парение для некоторых блёсток */
+    @keyframes sparkleFloat {
+      0%, 100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.6;
+      }
+      50% {
+        transform: translateY(-15px) scale(1.3);
+        opacity: 1;
+      }
+    }
+
+    .sparkle.float {
+      animation: sparkleFloat 5s ease-in-out infinite;
+      opacity: 0.7;
+    }
+
+    .player-container {
+      background: rgba(20, 5, 35, 0.85);
+      backdrop-filter: blur(20px);
+      border-radius: 25px;
+      padding: 30px;
+      width: 100%;
+      max-width: 620px;
+      box-shadow:
+        0 0 40px rgba(155, 89, 182, 0.4),
+        0 0 80px rgba(88, 24, 130, 0.3),
+        inset 0 0 30px rgba(155, 89, 182, 0.1);
+      border: 1px solid rgba(178, 102, 255, 0.4);
+      position: relative;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    /* Аниме-блики сверху */
+    .player-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        115deg,
+        transparent 40%,
+        rgba(178, 102, 255, 0.08) 50%,
+        transparent 60%
+      );
+      animation: shine 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%) translateY(-100%); }
+      100% { transform: translateX(100%) translateY(100%); }
+    }
+
+    /* Верхняя надпись СБОРНИК */
+    .banner {
+      text-align: center;
+      margin-bottom: 25px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .banner h1 {
+      font-size: 2.2em;
+      font-weight: 900;
+      letter-spacing: 4px;
+      background: linear-gradient(90deg, #d29bff, #b06bff, #8e44ad, #d29bff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientMove 3s linear infinite;
+      text-transform: uppercase;
+      filter: drop-shadow(0 0 15px rgba(178, 102, 255, 0.8));
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    .banner .by {
+      margin-top: 8px;
+      font-size: 1em;
+      color: #c39bff;
+      letter-spacing: 3px;
+      text-shadow: 0 0 10px rgba(178, 102, 255, 0.8);
+      font-weight: 500;
+    }
+
+    .banner .by span {
+      color: #d29bff;
+      font-weight: 700;
+      text-shadow: 0 0 15px #b06bff, 0 0 25px #8e44ad;
+    }
+
+    /* Аниме-разделитель */
+    .divider {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #b06bff, #d29bff, #b06bff, transparent);
+      margin: 15px 0 25px;
+      box-shadow: 0 0 15px rgba(178, 102, 255, 0.7);
+      position: relative;
+      z-index: 2;
+    }
+
+    .now-playing {
+      background: rgba(88, 24, 130, 0.3);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      border: 1px solid rgba(178, 102, 255, 0.3);
+      box-shadow: inset 0 0 20px rgba(155, 89, 182, 0.2);
+      position: relative;
+      z-index: 2;
+    }
+
+    .now-playing .label {
+      font-size: 0.75em;
+      color: #c39bff;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+      text-shadow: 0 0 8px rgba(178, 102, 255, 0.6);
+    }
+
+    .now-playing .title {
+      font-size: 1.05em;
+      font-weight: 600;
+      color: #fff;
+      min-height: 1.4em;
+      text-shadow: 0 0 10px rgba(178, 102, 255, 0.5);
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 15px;
+      border-radius: 10px;
+      outline: none;
+      filter: hue-rotate(250deg) saturate(1.3);
+    }
+
+    .playlist {
+      list-style: none;
+      max-height: 380px;
+      overflow-y: auto;
+      position: relative;
+      z-index: 2;
+      padding-right: 5px;
+    }
+
+    .playlist::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .playlist::-webkit-scrollbar-track {
+      background: rgba(178, 102, 255, 0.05);
+      border-radius: 10px;
+    }
+
+    .playlist::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #b06bff, #8e44ad);
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(178, 102, 255, 0.8);
+    }
+
+    .playlist li {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      margin-bottom: 8px;
+      background: rgba(88, 24, 130, 0.15);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(178, 102, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .playlist li:hover {
+      background: rgba(155, 89, 182, 0.25);
+      transform: translateX(6px);
+      border-color: rgba(178, 102, 255, 0.6);
+      box-shadow: 0 0 20px rgba(178, 102, 255, 0.4);
+    }
+
+    .playlist li.active {
+      background: linear-gradient(90deg, rgba(178, 102, 255, 0.35), rgba(88, 24, 130, 0.25));
+      border-color: #b06bff;
+      box-shadow:
+        0 0 25px rgba(178, 102, 255, 0.6),
+        inset 0 0 15px rgba(178, 102, 255, 0.2);
+    }
+
+    .playlist li .num {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(178, 102, 255, 0.2);
+      border-radius: 50%;
+      font-size: 0.85em;
+      font-weight: bold;
+      color: #d29bff;
+      margin-right: 14px;
+      flex-shrink: 0;
+      border: 1px solid rgba(178, 102, 255, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .playlist li:hover .num {
+      background: rgba(178, 102, 255, 0.4);
+      box-shadow: 0 0 12px rgba(178, 102, 255, 0.8);
+    }
+
+    .playlist li.active .num {
+      background: linear-gradient(135deg, #b06bff, #8e44ad);
+      color: #fff;
+      box-shadow: 0 0 15px #b06bff;
+      border-color: #d29bff;
+    }
+
+    .playlist li .song-title {
+      flex: 1;
+      font-size: 0.95em;
+      line-height: 1.3;
+      color: #e8d5ff;
+    }
+
+    .playlist li.active .song-title {
+      color: #fff;
+      text-shadow: 0 0 8px rgba(178, 102, 255, 0.6);
+    }
+
+    .playlist li .icon {
+      font-size: 1.2em;
+      opacity: 0.5;
+      margin-left: 10px;
+      color: #b06bff;
+      transition: all 0.3s ease;
+    }
+
+    .playlist li:hover .icon {
+      opacity: 1;
+      text-shadow: 0 0 10px #b06bff;
+    }
+
+    .playlist li.active .icon {
+      opacity: 1;
+      color: #d29bff;
+      text-shadow: 0 0 15px #b06bff;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.25); }
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.8em;
+      color: #9b6bc4;
+      letter-spacing: 1px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .footer .heart {
+      color: #b06bff;
+      text-shadow: 0 0 10px #b06bff;
+    }
+
+    /* Адаптив */
+    @media (max-width: 500px) {
+      .banner h1 { font-size: 1.6em; letter-spacing: 2px; }
+      .banner .by { font-size: 0.85em; }
+      .player-container { padding: 20px; }
+      .playlist li .song-title { font-size: 0.85em; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== БЛЁСТКИ НА ФОНЕ ===== -->
+  <div class="sparkles" id="sparkles"></div>
+
+  <div class="player-container">
+    <!-- Верхняя надпись -->
+    <div class="banner">
+      <h1>СБОРНИК</h1>
+      <div class="by">By: <span>Branckes</span></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="now-playing">
+      <div class="label">✦ Сейчас играет ✦</div>
+      <div class="title" id="nowPlaying">Выбери песню из плейлиста 👇</div>
+      <audio id="audioPlayer" controls></audio>
+    </div>
+
+    <ul class="playlist" id="playlist"></ul>
+
+    <div class="footer">Нажми на песню, чтобы включить <span class="heart">♥</span></div>
+  </div>
+
+  <script>
+    /* ===== ГЕНЕРАЦИЯ БЛЁСТОК ===== */
+    (function createSparkles() {
+      const container = document.getElementById('sparkles');
+      const types = ['small', 'small', 'small', 'medium', 'medium', 'big', 'star'];
+      const total = 70; // сколько блёсток на экране
+
+      for (let i = 0; i < total; i++) {
+        const s = document.createElement('div');
+        const type = types[Math.floor(Math.random() * types.length)];
+        s.className = 'sparkle ' + type;
+
+        // Случайная позиция по всему экрану
+        s.style.left = Math.random() * 100 + '%';
+        s.style.top = Math.random() * 100 + '%';
+
+        // Случайная задержка мерцания
+        s.style.animationDelay = (Math.random() * 4) + 's';
+
+        // Случайная длительность анимации
+        s.style.animationDuration = (2 + Math.random() * 3) + 's';
+
+        // Некоторые блёстки будут "парить"
+        if (Math.random() > 0.65) {
+          s.classList.add('float');
+        }
+
+        container.appendChild(s);
+      }
+    })();
+
+    const songs = [
+      { title: "Браги два бидона", url: "https://dl2.mp3party.net/online/11381786.mp3" },
+      { title: "Оладушки (feat. Malad)", url: "https://dl2.mp3party.net/online/11515175.mp3" },
+      { title: "WOOPAAA (prod. by djcodenewar, threeangels)", url: "https://dl2.mp3party.net/online/11514581.mp3" },
+      { title: "Балалайка (semansgocrazy remix)", url: "https://dl2.mp3party.net/online/11222101.mp3" },
+      { title: "Валенки", url: "https://dl2.mp3party.net/online/11327669.mp3" }
+    ];
+
+    const audio = document.getElementById('audioPlayer');
+    const nowPlaying = document.getElementById('nowPlaying');
+    const playlistEl = document.getElementById('playlist');
+
+    let currentIndex = -1;
+
+    songs.forEach((song, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span class="num">${index + 1}</span>
+        <span class="song-title">GORILLA GLUE, LIL NAKUR – ${song.title}</span>
+        <span class="icon">▶</span>
+      `;
+      li.addEventListener('click', () => playSong(index));
+      playlistEl.appendChild(li);
+    });
+
+    function playSong(index) {
+      currentIndex = index;
+      const song = songs[index];
+      audio.src = song.url;
+      audio.play().catch(err => {
+        console.warn('Автовоспроизведение заблокировано:', err);
+      });
+      nowPlaying.textContent = `GORILLA GLUE, LIL NAKUR – ${song.title}`;
+      updateActive();
+    }
+
+    function updateActive() {
+      const items = playlistEl.querySelectorAll('li');
+      items.forEach((li, i) => {
+        li.classList.toggle('active', i === currentIndex);
+      });
+    }
+
+    audio.addEventListener('ended', () => {
+      if (currentIndex < songs.length - 1) {
+        playSong(currentIndex + 1);
+      }
+    });
+  </script>
+</body>
+</html>
