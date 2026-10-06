@@ -114,7 +114,6 @@
   button.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255, 43, 43, 0.9); }
   button.submit-btn:active { transform: scale(0.98); }
 
-  /* ===== КНОПКА АДМИН-ПАНЕЛИ ===== */
   .admin-toggle {
     position: fixed;
     top: 20px;
@@ -129,13 +128,9 @@
     cursor: pointer;
     transition: 0.3s;
     z-index: 500;
-    display: flex;
-    align-items: center;
-    gap: 6px;
   }
   .admin-toggle:hover { border-color: #ff2b2b; color: #ff2b2b; box-shadow: 0 0 15px rgba(255,43,43,0.5); }
 
-  /* ===== МОДАЛЬНЫЕ ОКНА ===== */
   .modal-overlay {
     display: none;
     position: fixed;
@@ -253,7 +248,6 @@
   }
   .modal-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255, 43, 43, 0.9); }
 
-  /* ===== СТРАНИЦЫ ПРОСМОТРА ===== */
   .view-page { display: none; }
   .view-page.active { display: block; }
   .form-page.hidden { display: none; }
@@ -288,7 +282,6 @@
   .value.yes { color: #4caf50; font-weight: bold; }
   .value.no { color: #ff5555; font-weight: bold; }
 
-  /* ===== СТАТУСЫ ===== */
   .status-box {
     margin-top: 25px;
     padding: 20px;
@@ -430,9 +423,6 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
   }
 
   .admin-preview {
@@ -555,11 +545,12 @@
     transition: 0.4s;
     z-index: 3000;
     pointer-events: none;
+    text-align: center;
+    max-width: 90%;
   }
   .admin-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
   .admin-toast.error { background: linear-gradient(90deg, #7a0a0a, #c52222); }
 
-  /* Скроллбар */
   ::-webkit-scrollbar { width: 8px; height: 8px; }
   ::-webkit-scrollbar-track { background: #111; border-radius: 4px; }
   ::-webkit-scrollbar-thumb { background: #550000; border-radius: 4px; }
@@ -568,12 +559,11 @@
 </head>
 <body>
 
-<!-- Кнопка админ-панели -->
 <button class="admin-toggle" id="adminToggle">🔐 Админ-панель</button>
 
 <div class="container">
 
-  <!-- ========== СТРАНИЦА АНКЕТЫ (для заполнения) ========== -->
+  <!-- СТРАНИЦА АНКЕТЫ -->
   <div class="form-page" id="formPage">
     <h1>Отбор в клан Malboro</h1>
     <p class="subtitle">Black Russia • Заполни анкету и отправь ссылку <span>админу</span></p>
@@ -625,7 +615,7 @@
     </form>
   </div>
 
-  <!-- ========== СТРАНИЦА ПРОСМОТРА АНКЕТЫ ========== -->
+  <!-- ПРОСМОТР АНКЕТЫ -->
   <div class="view-page" id="viewPage">
     <div class="anketa-header">
       <div class="badge">BLACK RUSSIA</div>
@@ -639,7 +629,7 @@
     <a href="#" class="back-btn" onclick="goBack(event)">← Заполнить новую анкету</a>
   </div>
 
-  <!-- ========== СТРАНИЦА ОШИБКИ ========== -->
+  <!-- ОШИБКА -->
   <div class="view-page" id="errorPage">
     <div class="error-page">
       <div class="icon">⚠️</div>
@@ -651,10 +641,10 @@
 
 </div>
 
-<!-- ========== МОДАЛЬНОЕ ОКНО С ССЫЛКОЙ ========== -->
+<!-- МОДАЛКА С ССЫЛКОЙ -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
-    <button class="modal-close" id="modalClose" title="Закрыть">×</button>
+    <button class="modal-close" id="modalClose">×</button>
 
     <div class="modal-icon">🔗</div>
     <h2>Анкета готова!</h2>
@@ -674,10 +664,10 @@
   </div>
 </div>
 
-<!-- ========== АДМИН-ПАНЕЛЬ ========== -->
+<!-- АДМИН-ПАНЕЛЬ -->
 <div class="admin-panel" id="adminPanel">
   <div class="admin-window">
-    <button class="admin-close" id="adminClose" title="Закрыть">×</button>
+    <button class="admin-close" id="adminClose">×</button>
 
     <h2>🔐 Админ-панель</h2>
     <p class="admin-sub">Клан Malboro • Black Russia</p>
@@ -743,15 +733,15 @@
   </div>
 </div>
 
-<!-- Тост-уведомление -->
 <div class="admin-toast" id="adminToast"></div>
 
 <script>
   // ===== КОНСТАНТЫ =====
   const ADMIN_CODE = 'SAMP_BLACK_RUSSIA_ADMIN_@ROMAN';
-  const ADMIN_CONTACT = 'https://t.me/Uzyev'; // 👈 замените на ссылку вашего админа
+  const ADMIN_CONTACT = 'https://t.me/ВАШ_АДМИН';
+  const STORAGE_KEY = 'malboro_decisions_v1'; // ключ для хранения решений в localStorage
 
-  // ===== ССЫЛКИ НА ЭЛЕМЕНТЫ =====
+  // ===== ССЫЛКИ =====
   const formPage = document.getElementById('formPage');
   const viewPage = document.getElementById('viewPage');
   const errorPage = document.getElementById('errorPage');
@@ -784,10 +774,31 @@
   const statusOptions = document.getElementById('statusOptions');
   const adminToast = document.getElementById('adminToast');
 
-  let currentAdminData = null; // данные анкеты, открытой в админке
-  let selectedStatus = 'pending'; // выбранный статус
+  let currentAdminData = null;
+  let currentAnketaId = null;
+  let selectedStatus = 'pending';
 
-  // ===== КОДИРОВАНИЕ / ДЕКОДИРОВАНИЕ =====
+  // ===== ХРАНИЛИЩЕ РЕШЕНИЙ (localStorage) =====
+  function loadDecisions() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch(e) {
+      return {};
+    }
+  }
+
+  function saveDecision(anketaId, status, reason) {
+    const all = loadDecisions();
+    all[anketaId] = { st: status, rs: reason, updated: Date.now() };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  }
+
+  function getDecision(anketaId) {
+    const all = loadDecisions();
+    return all[anketaId] || null;
+  }
+
+  // ===== КОДИРОВАНИЕ =====
   function encodeData(obj) {
     const json = JSON.stringify(obj);
     return btoa(unescape(encodeURIComponent(json)))
@@ -807,7 +818,12 @@
     }
   }
 
-  // ===== МОДАЛКА С ССЫЛКОЙ =====
+  // Уникальный ID анкеты на основе данных (чтобы ссылка всегда была та же)
+  function getAnketaId(data) {
+    return (data.t || 0).toString();
+  }
+
+  // ===== МОДАЛКА =====
   function openModal(link) {
     modalLink.value = link;
     modalOverlay.classList.add('active');
@@ -843,8 +859,7 @@
   });
 
   modalSendBtn.addEventListener('click', function () {
-    const link = modalLink.value;
-    const text = `Анкета в клан Malboro:\n${link}`;
+    const text = `Анкета в клан Malboro:\n${modalLink.value}`;
     window.open(`${ADMIN_CONTACT}?text=${encodeURIComponent(text)}`, '_blank');
   });
 
@@ -867,9 +882,7 @@
       a: document.getElementById('age').value.trim() || '—',
       s: document.querySelector('input[name="serve"]:checked')?.value || '—',
       p: document.getElementById('playtime').value.trim() || '—',
-      t: Date.now(),
-      st: 'pending',
-      rs: ''
+      t: Date.now()
     };
 
     const code = encodeData(data);
@@ -879,7 +892,7 @@
     openModal(link);
   });
 
-  // ===== ОТОБРАЖЕНИЕ АНКЕТЫ =====
+  // ===== РЕНДЕР АНКЕТЫ =====
   function renderAnketa(data) {
     const fields = [
       { key: '1. Реальное имя', value: data.n },
@@ -903,18 +916,20 @@
       `;
     }).join('');
 
-    const id = (data.t || Date.now()).toString().slice(-6);
-    document.getElementById('anketaId').textContent = '#' + id;
+    const id = getAnketaId(data);
+    document.getElementById('anketaId').textContent = '#' + id.slice(-6);
 
-    renderStatus(data);
+    // Подтягиваем сохранённое решение из localStorage по ID анкеты
+    const saved = getDecision(id);
+    const status = saved ? saved.st : 'pending';
+    const reason = saved ? saved.rs : '';
+
+    renderStatus(status, reason);
   }
 
-  // ===== ОТОБРАЖЕНИЕ СТАТУСА =====
-  function renderStatus(data) {
+  function renderStatus(st, reason) {
     const statusBox = document.getElementById('statusBox');
-    const st = data.st || 'pending';
-    const reason = (data.rs || '').trim();
-
+    reason = (reason || '').trim();
     let html = '';
 
     if (st === 'accepted') {
@@ -997,6 +1012,7 @@
     adminLinkInput.value = '';
     adminReason.value = '';
     currentAdminData = null;
+    currentAnketaId = null;
     selectedStatus = 'pending';
     updateStatusOptions();
   }
@@ -1027,19 +1043,15 @@
 
   authCancel.addEventListener('click', closeAdminPanel);
 
-  // ===== ЗАГРУЗКА АНКЕТЫ В АДМИНКЕ =====
+  // ===== ЗАГРУЗКА АНКЕТЫ =====
   adminLoad.addEventListener('click', () => {
     const raw = adminLinkInput.value.trim();
     if (!raw) return showToast('⚠️ Вставьте ссылку', true);
 
     let code = null;
     const idx = raw.indexOf('#anketa=');
-    if (idx !== -1) {
-      code = raw.substring(idx + 8);
-    } else {
-      // возможно, вставили только код
-      code = raw;
-    }
+    if (idx !== -1) code = raw.substring(idx + 8);
+    else code = raw;
 
     const data = decodeData(code);
     if (!data || !data.n || !data.k) {
@@ -1047,10 +1059,14 @@
     }
 
     currentAdminData = data;
-    selectedStatus = data.st || 'pending';
+    currentAnketaId = getAnketaId(data);
+
+    // Подтягиваем существующее решение, если есть
+    const existing = getDecision(currentAnketaId);
+    selectedStatus = existing ? existing.st : 'pending';
+    adminReason.value = existing ? existing.rs : '';
 
     renderAdminPreview(data);
-    adminReason.value = data.rs || '';
     updateStatusOptions();
     adminForm.style.display = 'block';
     showToast('✅ Анкета загружена');
@@ -1060,6 +1076,7 @@
     adminLinkInput.value = '';
     adminForm.style.display = 'none';
     currentAdminData = null;
+    currentAnketaId = null;
   });
 
   function renderAdminPreview(data) {
@@ -1097,33 +1114,16 @@
     });
   }
 
-  // ===== СОХРАНЕНИЕ РЕШЕНИЯ =====
+  // ===== СОХРАНЕНИЕ (в ту же самую ссылку!) =====
   adminSave.addEventListener('click', () => {
-    if (!currentAdminData) return showToast('⚠️ Сначала загрузите анкету', true);
+    if (!currentAdminData || !currentAnketaId) {
+      return showToast('⚠️ Сначала загрузите анкету', true);
+    }
 
-    currentAdminData.st = selectedStatus;
-    currentAdminData.rs = adminReason.value.trim();
+    // Сохраняем решение в localStorage по ID анкеты
+    saveDecision(currentAnketaId, selectedStatus, adminReason.value.trim());
 
-    const code = encodeData(currentAdminData);
-    const baseUrl = window.location.origin + window.location.pathname;
-    const link = `${baseUrl}#anketa=${code}`;
-
-    // Копируем обновлённую ссылку в буфер
-    navigator.clipboard.writeText(link).then(() => {
-      showToast('✅ Решение сохранено! Ссылка скопирована');
-    }).catch(() => {
-      // Fallback
-      const tmp = document.createElement('textarea');
-      tmp.value = link;
-      document.body.appendChild(tmp);
-      tmp.select();
-      try { document.execCommand('copy'); } catch(e) {}
-      document.body.removeChild(tmp);
-      showToast('✅ Решение сохранено! Ссылка скопирована');
-    });
-
-    // Обновляем предпросмотр (не обязательно, но приятно)
-    adminLinkInput.value = link;
+    showToast('✅ Решение сохранено! Ссылка не изменилась — откройте её заново для проверки');
   });
 
   adminCancel.addEventListener('click', () => {
@@ -1131,6 +1131,7 @@
     adminLinkInput.value = '';
     adminReason.value = '';
     currentAdminData = null;
+    currentAnketaId = null;
     selectedStatus = 'pending';
     updateStatusOptions();
   });
@@ -1144,7 +1145,7 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => {
       adminToast.classList.remove('show');
-    }, 2600);
+    }, 3200);
   }
 </script>
 
