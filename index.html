@@ -1,1153 +1,952 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Отбор в клан Malboro | Black Russia</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-
-  body {
-    min-height: 100vh;
-    background: linear-gradient(135deg, #0f0f0f 0%, #1a0000 50%, #2b0000 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 30px 15px;
-    color: #eee;
-  }
-
-  .container {
-    width: 100%;
-    max-width: 700px;
-    background: rgba(20, 20, 20, 0.95);
-    border: 2px solid #b30000;
-    border-radius: 16px;
-    padding: 35px 30px;
-    box-shadow: 0 0 40px rgba(179, 0, 0, 0.5);
-  }
-
-  h1 {
-    text-align: center;
-    color: #ff2b2b;
-    font-size: 28px;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 12px rgba(255, 0, 0, 0.7);
-  }
-
-  .subtitle {
-    text-align: center;
-    color: #aaa;
-    font-size: 14px;
-    margin-bottom: 30px;
-  }
-
-  .subtitle span { color: #ff2b2b; font-weight: bold; }
-
-  .field { margin-bottom: 20px; }
-
-  label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 15px;
-    color: #ffb3b3;
-    font-weight: 600;
-  }
-
-  label .optional {
-    color: #777;
-    font-size: 12px;
-    font-weight: normal;
-    font-style: italic;
-  }
-
-  input, select, textarea {
-    width: 100%;
-    padding: 12px 14px;
-    background: #0a0a0a;
-    border: 1px solid #550000;
-    border-radius: 8px;
-    color: #fff;
-    font-size: 15px;
-    outline: none;
-    transition: 0.3s;
-    font-family: inherit;
-  }
-
-  textarea { resize: vertical; min-height: 80px; }
-
-  input:focus, select:focus, textarea:focus {
-    border-color: #ff2b2b;
-    box-shadow: 0 0 10px rgba(255, 43, 43, 0.5);
-  }
-
-  .radio-group { display: flex; gap: 25px; margin-top: 5px; flex-wrap: wrap; }
-  .radio-group label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #ddd;
-    font-weight: normal;
-    cursor: pointer;
-  }
-  .radio-group input { width: auto; accent-color: #ff2b2b; }
-
-  button.submit-btn {
-    width: 100%;
-    padding: 15px;
-    margin-top: 10px;
-    background: linear-gradient(90deg, #b30000, #ff2b2b);
-    border: none;
-    border-radius: 10px;
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    cursor: pointer;
-    transition: 0.3s;
-    box-shadow: 0 0 20px rgba(255, 43, 43, 0.5);
-  }
-
-  button.submit-btn:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255, 43, 43, 0.9); }
-  button.submit-btn:active { transform: scale(0.98); }
-
-  .admin-toggle {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 10px 16px;
-    background: rgba(20, 20, 20, 0.95);
-    border: 1px solid #550000;
-    border-radius: 10px;
-    color: #ffb3b3;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    z-index: 500;
-  }
-  .admin-toggle:hover { border-color: #ff2b2b; color: #ff2b2b; box-shadow: 0 0 15px rgba(255,43,43,0.5); }
-
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(6px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    animation: fadeIn 0.3s ease;
-    overflow-y: auto;
-  }
-
-  .modal-overlay.active { display: flex; }
-
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(30px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-
-  .modal {
-    width: 100%;
-    max-width: 540px;
-    background: linear-gradient(160deg, #1a1a1a, #0f0000);
-    border: 2px solid #ff2b2b;
-    border-radius: 16px;
-    padding: 30px 25px;
-    box-shadow: 0 0 60px rgba(255, 43, 43, 0.6);
-    animation: slideUp 0.35s ease;
-    position: relative;
-    margin: auto;
-  }
-
-  .modal-close {
-    position: absolute;
-    top: 12px;
-    right: 15px;
-    background: transparent;
-    border: none;
-    color: #777;
-    font-size: 26px;
-    cursor: pointer;
-    line-height: 1;
-    transition: 0.3s;
-  }
-  .modal-close:hover { color: #ff2b2b; transform: rotate(90deg); }
-
-  .modal-icon { text-align: center; font-size: 50px; margin-bottom: 12px; filter: drop-shadow(0 0 15px rgba(255, 43, 43, 0.7)); }
-
-  .modal h2 {
-    text-align: center;
-    color: #ff2b2b;
-    font-size: 22px;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 10px;
-  }
-
-  .modal p { text-align: center; color: #aaa; font-size: 14px; line-height: 1.5; margin-bottom: 20px; }
-  .modal p b { color: #ff2b2b; }
-
-  .modal-link-box {
-    display: flex;
-    margin-bottom: 12px;
-    background: #0a0a0a;
-    border: 1px solid #550000;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .modal-link-box:focus-within { border-color: #ff2b2b; box-shadow: 0 0 12px rgba(255, 43, 43, 0.5); }
-  .modal-link-box input { border: none; border-radius: 0; background: transparent; font-size: 13px; color: #ffb3b3; padding: 14px 12px; flex: 1; }
-  .modal-link-box input:focus { box-shadow: none; }
-
-  .modal-copy-btn {
-    padding: 0 18px;
-    background: linear-gradient(90deg, #b30000, #ff2b2b);
-    border: none;
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .modal-copy-btn:hover { background: linear-gradient(90deg, #ff2b2b, #ff5555); }
-  .modal-copy-btn.copied { background: linear-gradient(90deg, #0a7a0a, #22c55e); }
-
-  .modal-hint { text-align: center; color: #777; font-size: 12px; margin-bottom: 18px; }
-  .modal-actions { display: flex; gap: 10px; }
-
-  .modal-btn {
-    flex: 1;
-    padding: 13px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .modal-btn.secondary { background: transparent; border: 1px solid #550000; color: #aaa; }
-  .modal-btn.secondary:hover { border-color: #ff2b2b; color: #ff2b2b; }
-  .modal-btn.primary {
-    background: linear-gradient(90deg, #b30000, #ff2b2b);
-    border: none;
-    color: #fff;
-    box-shadow: 0 0 15px rgba(255, 43, 43, 0.5);
-  }
-  .modal-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255, 43, 43, 0.9); }
-
-  .view-page { display: none; }
-  .view-page.active { display: block; }
-  .form-page.hidden { display: none; }
-
-  .anketa-header { text-align: center; margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px dashed #550000; }
-  .anketa-header .badge {
-    display: inline-block;
-    padding: 5px 14px;
-    background: #b30000;
-    color: #fff;
-    border-radius: 20px;
-    font-size: 12px;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-  }
-  .anketa-header h2 { color: #ff2b2b; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; }
-  .anketa-header p { color: #888; font-size: 13px; margin-top: 6px; }
-
-  .anketa-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 15px;
-    padding: 14px 16px;
-    background: #0a0a0a;
-    border-left: 3px solid #b30000;
-    border-radius: 6px;
-    margin-bottom: 10px;
-  }
-  .anketa-row .key { color: #ffb3b3; font-weight: 600; font-size: 14px; flex-shrink: 0; max-width: 55%; }
-  .anketa-row .value { color: #fff; font-size: 14px; text-align: right; word-break: break-word; }
-  .value.yes { color: #4caf50; font-weight: bold; }
-  .value.no { color: #ff5555; font-weight: bold; }
-
-  .status-box {
-    margin-top: 25px;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    font-weight: bold;
-    letter-spacing: 1px;
-  }
-
-  .status-pending {
-    background: linear-gradient(90deg, #3a3a00, #6b6b00);
-    border: 1px solid #ffcc00;
-    color: #ffcc00;
-  }
-  .status-accepted {
-    background: linear-gradient(90deg, #0a3a0a, #0f6b0f);
-    border: 1px solid #4caf50;
-    color: #7eff7e;
-  }
-  .status-rejected {
-    background: linear-gradient(90deg, #3a0000, #6b0000);
-    border: 1px solid #ff2b2b;
-    color: #ff8080;
-  }
-
-  .status-box .status-title {
-    font-size: 18px;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .status-box .status-reason {
-    font-size: 13px;
-    font-weight: normal;
-    color: rgba(255,255,255,0.85);
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed rgba(255,255,255,0.25);
-    text-align: left;
-    line-height: 1.5;
-    letter-spacing: 0;
-  }
-
-  .status-box .status-reason b { color: #fff; }
-
-  .back-btn {
-    display: block;
-    width: 100%;
-    margin-top: 20px;
-    padding: 12px;
-    background: transparent;
-    border: 1px solid #550000;
-    border-radius: 8px;
-    color: #aaa;
-    font-size: 14px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    transition: 0.3s;
-  }
-  .back-btn:hover { border-color: #ff2b2b; color: #ff2b2b; }
-
-  .error-page { text-align: center; padding: 30px 20px; }
-  .error-page .icon { font-size: 60px; margin-bottom: 15px; }
-  .error-page h2 { color: #ff2b2b; margin-bottom: 10px; }
-  .error-page p { color: #aaa; }
-
-  /* ===== АДМИН-ПАНЕЛЬ ===== */
-  .admin-panel {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.92);
-    backdrop-filter: blur(8px);
-    z-index: 1500;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
-    overflow-y: auto;
-  }
-  .admin-panel.active { display: flex; }
-
-  .admin-window {
-    width: 100%;
-    max-width: 700px;
-    background: linear-gradient(160deg, #151515, #0a0000);
-    border: 2px solid #ffcc00;
-    border-radius: 16px;
-    padding: 30px 28px;
-    box-shadow: 0 0 60px rgba(255, 204, 0, 0.4);
-    position: relative;
-  }
-
-  .admin-window h2 {
-    color: #ffcc00;
-    text-align: center;
-    font-size: 22px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 6px;
-    text-shadow: 0 0 12px rgba(255, 204, 0, 0.6);
-  }
-
-  .admin-window .admin-sub {
-    text-align: center;
-    color: #888;
-    font-size: 13px;
-    margin-bottom: 25px;
-  }
-
-  .admin-close {
-    position: absolute;
-    top: 12px;
-    right: 15px;
-    background: transparent;
-    border: none;
-    color: #777;
-    font-size: 26px;
-    cursor: pointer;
-    line-height: 1;
-    transition: 0.3s;
-  }
-  .admin-close:hover { color: #ffcc00; transform: rotate(90deg); }
-
-  .admin-section {
-    background: #0a0a0a;
-    border: 1px solid #333;
-    border-radius: 12px;
-    padding: 18px;
-    margin-bottom: 18px;
-  }
-
-  .admin-section h3 {
-    color: #ffcc00;
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-  }
-
-  .admin-preview {
-    margin-top: 15px;
-    max-height: 260px;
-    overflow-y: auto;
-    padding: 12px;
-    background: #050505;
-    border-radius: 8px;
-    border: 1px dashed #333;
-  }
-
-  .admin-preview .preview-row {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 8px 10px;
-    border-bottom: 1px solid #1a1a1a;
-    font-size: 13px;
-  }
-  .admin-preview .preview-row:last-child { border-bottom: none; }
-  .admin-preview .preview-row .pk { color: #ffb3b3; }
-  .admin-preview .preview-row .pv { color: #fff; text-align: right; word-break: break-word; }
-  .admin-preview .preview-row .pv.yes { color: #4caf50; font-weight: bold; }
-  .admin-preview .preview-row .pv.no { color: #ff5555; font-weight: bold; }
-
-  .status-options {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 10px;
-  }
-
-  .status-option {
-    padding: 14px 10px;
-    border-radius: 10px;
-    border: 2px solid #333;
-    background: #0a0a0a;
-    color: #aaa;
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-  }
-  .status-option .so-icon { font-size: 22px; }
-  .status-option:hover { border-color: #666; color: #fff; }
-  .status-option.selected[data-status="pending"] {
-    border-color: #ffcc00;
-    background: linear-gradient(160deg, #2a2a00, #3a3a00);
-    color: #ffcc00;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
-  }
-  .status-option.selected[data-status="accepted"] {
-    border-color: #4caf50;
-    background: linear-gradient(160deg, #0a2a0a, #0f3a0f);
-    color: #7eff7e;
-    box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
-  }
-  .status-option.selected[data-status="rejected"] {
-    border-color: #ff2b2b;
-    background: linear-gradient(160deg, #2a0000, #3a0000);
-    color: #ff8080;
-    box-shadow: 0 0 15px rgba(255, 43, 43, 0.4);
-  }
-
-  .admin-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-  }
-
-  .admin-btn {
-    flex: 1;
-    padding: 14px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-
-  .admin-btn.save {
-    background: linear-gradient(90deg, #b8860b, #ffcc00);
-    border: none;
-    color: #000;
-    box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
-  }
-  .admin-btn.save:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255, 204, 0, 0.9); }
-
-  .admin-btn.cancel {
-    background: transparent;
-    border: 1px solid #550000;
-    color: #aaa;
-    flex: 0 0 120px;
-  }
-  .admin-btn.cancel:hover { border-color: #ff2b2b; color: #ff2b2b; }
-
-  .admin-toast {
-    position: fixed;
-    bottom: 25px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100px);
-    padding: 14px 24px;
-    background: linear-gradient(90deg, #0a7a0a, #22c55e);
-    color: #fff;
-    border-radius: 10px;
-    font-weight: bold;
-    font-size: 14px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    opacity: 0;
-    transition: 0.4s;
-    z-index: 3000;
-    pointer-events: none;
-    text-align: center;
-    max-width: 90%;
-  }
-  .admin-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  .admin-toast.error { background: linear-gradient(90deg, #7a0a0a, #c52222); }
-
-  ::-webkit-scrollbar { width: 8px; height: 8px; }
-  ::-webkit-scrollbar-track { background: #111; border-radius: 4px; }
-  ::-webkit-scrollbar-thumb { background: #550000; border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: #ff2b2b; }
-</style>
+<meta charset="utf-8">
+<title>Чат / FunPay</title><link href="https://funpay.com/710/css/main.css" rel="stylesheet" media="all">
+<script src="https://funpay.com/535/js/app.bundle.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="alternate" hreflang="ru" href="https://funpay.com/chat/?node=294608970"><link rel="alternate" hreflang="uk" href="https://funpay.com/chat/?node=294608970"><link rel="alternate" hreflang="en" href="https://funpay.com/en/chat/?node=294608970"><link rel="alternate" hreflang="x-default" href="https://funpay.com/en/chat/?node=294608970"><script type="application/ld+json">[{"@context":"http:\/\/schema.org\/","@type":"WebSite","name":"FunPay","url":"https:\/\/funpay.com\/"}]</script><link rel="preload" href="/710/fonts/Graphik-Bold-Web.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/710/fonts/Graphik-Semibold-Web.woff2" as="font" type="font/woff2" crossorigin><link rel="manifest" href="/manifest.json">
 </head>
-<body>
-
-<button class="admin-toggle" id="adminToggle">🔐 Админ-панель</button>
-
-<div class="container">
-
-  <!-- СТРАНИЦА АНКЕТЫ -->
-  <div class="form-page" id="formPage">
-    <h1>Отбор в клан Malboro</h1>
-    <p class="subtitle">Black Russia • Заполни анкету и отправь ссылку <span>админу</span></p>
-
-    <form id="clanForm">
-      <div class="field">
-        <label>1. Ваше реальное имя:</label>
-        <input type="text" id="realName" placeholder="Введите имя" required>
-      </div>
-
-      <div class="field">
-        <label>2. Ваш игровой ник-нейм:</label>
-        <input type="text" id="nickname" placeholder="Введите ник" required>
-      </div>
-
-      <div class="field">
-        <label>3. Ваш позывной: <span class="optional">(по желанию)</span></label>
-        <input type="text" id="callsign" placeholder="Введите позывной">
-      </div>
-
-      <div class="field">
-        <label>4. Вы новичок или опытный игрок?</label>
-        <select id="experience" required>
-          <option value="">— Выберите вариант —</option>
-          <option value="Новичок">Новичок</option>
-          <option value="Опытный игрок">Опытный игрок</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>5. Сколько вам лет? <span class="optional">(по желанию)</span></label>
-        <input type="number" id="age" placeholder="Введите возраст" min="1" max="99">
-      </div>
-
-      <div class="field">
-        <label>6. Готовы вы служить клану Malboro?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="serve" value="Да" required> Да</label>
-          <label><input type="radio" name="serve" value="Нет"> Нет</label>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>7. Сколько времени вы проводите в игре? <span class="optional">(по желанию)</span></label>
-        <input type="text" id="playtime" placeholder="Например: 3-4 часа в день">
-      </div>
-
-      <button type="submit" class="submit-btn">Отправить анкету</button>
-    </form>
-  </div>
-
-  <!-- ПРОСМОТР АНКЕТЫ -->
-  <div class="view-page" id="viewPage">
-    <div class="anketa-header">
-      <div class="badge">BLACK RUSSIA</div>
-      <h2>Анкета в клан Malboro</h2>
-      <p>ID анкеты: <span id="anketaId">—</span></p>
-    </div>
-
-    <div id="anketaBody"></div>
-    <div id="statusBox"></div>
-
-    <a href="#" class="back-btn" onclick="goBack(event)">← Заполнить новую анкету</a>
-  </div>
-
-  <!-- ОШИБКА -->
-  <div class="view-page" id="errorPage">
-    <div class="error-page">
-      <div class="icon">⚠️</div>
-      <h2>Анкета не найдена</h2>
-      <p>Ссылка повреждена или данные анкеты отсутствуют.</p>
-      <a href="#" class="back-btn" onclick="goBack(event)">← На главную</a>
-    </div>
-  </div>
-
-</div>
-
-<!-- МОДАЛКА С ССЫЛКОЙ -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal">
-    <button class="modal-close" id="modalClose">×</button>
-
-    <div class="modal-icon">🔗</div>
-    <h2>Анкета готова!</h2>
-    <p>Скопируйте ссылку и отправьте её <b>админу</b>.<br>Он откроет её и увидит вашу анкету.</p>
-
-    <div class="modal-link-box">
-      <input type="text" id="modalLink" readonly>
-      <button class="modal-copy-btn" id="modalCopyBtn">📋 Скопировать</button>
-    </div>
-
-    <p class="modal-hint">Ссылка содержит все данные вашей анкеты</p>
-
-    <div class="modal-actions">
-      <button class="modal-btn secondary" id="modalCloseBtn">Закрыть</button>
-      <button class="modal-btn primary" id="modalSendBtn">Отправить админу</button>
-    </div>
-  </div>
-</div>
-
-<!-- АДМИН-ПАНЕЛЬ -->
-<div class="admin-panel" id="adminPanel">
-  <div class="admin-window">
-    <button class="admin-close" id="adminClose">×</button>
-
-    <h2>🔐 Админ-панель</h2>
-    <p class="admin-sub">Клан Malboro • Black Russia</p>
-
-    <!-- Авторизация -->
-    <div id="adminAuth">
-      <div class="admin-section">
-        <h3>🔑 Введите код доступа</h3>
-        <input type="text" id="adminCode" placeholder="Введите код доступа...">
-      </div>
-      <div class="admin-actions">
-        <button class="admin-btn cancel" id="authCancel">Отмена</button>
-        <button class="admin-btn save" id="authLogin">Войти</button>
-      </div>
-    </div>
-
-    <!-- Основная панель -->
-    <div id="adminMain" style="display:none;">
-      <div class="admin-section">
-        <h3>📎 Вставьте ссылку от заявки</h3>
-        <input type="text" id="adminLinkInput" placeholder="https://.../#anketa=...">
-        <div class="admin-actions" style="margin-top:12px;">
-          <button class="admin-btn cancel" id="adminClear" style="flex:0 0 120px;">Очистить</button>
-          <button class="admin-btn save" id="adminLoad">Загрузить анкету</button>
-        </div>
-      </div>
-
-      <div id="adminForm" style="display:none;">
-        <div class="admin-section">
-          <h3>👤 Просмотр анкеты</h3>
-          <div class="admin-preview" id="adminPreview"></div>
-        </div>
-
-        <div class="admin-section">
-          <h3>⚖️ Решение по заявке</h3>
-          <div class="status-options" id="statusOptions">
-            <div class="status-option" data-status="pending">
-              <span class="so-icon">⏳</span>
-              <span>В ожидании</span>
-            </div>
-            <div class="status-option" data-status="accepted">
-              <span class="so-icon">✅</span>
-              <span>Принято</span>
-            </div>
-            <div class="status-option" data-status="rejected">
-              <span class="so-icon">❌</span>
-              <span>Отказано</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="admin-section">
-          <h3>💬 Причина / комментарий</h3>
-          <textarea id="adminReason" placeholder="Напишите причину решения или комментарий для игрока..."></textarea>
-        </div>
-
-        <div class="admin-actions">
-          <button class="admin-btn cancel" id="adminCancel">Отмена</button>
-          <button class="admin-btn save" id="adminSave">💾 Сохранить решение</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="admin-toast" id="adminToast"></div>
+<body class="bg-light-color" data-app-data="{&quot;locale&quot;:&quot;ru&quot;,&quot;csrf-token&quot;:&quot;jwwmhw5z3pi545po&quot;,&quot;userId&quot;:19423018,&quot;runnerCoordId&quot;:&quot;v1_d10993453fd2554172631dd9f2300149&quot;,&quot;webpush&quot;:{&quot;app&quot;:&quot;C356D-32008&quot;}}">
+    <!--suppress ALL -->
 
 <script>
-  // ===== КОНСТАНТЫ =====
-  const ADMIN_CODE = 'SAMP_BLACK_RUSSIA_ADMIN_@ROMAN';
-  const ADMIN_CONTACT = 'https://t.me/ВАШ_АДМИН';
-  const STORAGE_KEY = 'malboro_decisions_v1'; // ключ для хранения решений в localStorage
-
-  // ===== ССЫЛКИ =====
-  const formPage = document.getElementById('formPage');
-  const viewPage = document.getElementById('viewPage');
-  const errorPage = document.getElementById('errorPage');
-  const form = document.getElementById('clanForm');
-
-  const modalOverlay = document.getElementById('modalOverlay');
-  const modalLink = document.getElementById('modalLink');
-  const modalCopyBtn = document.getElementById('modalCopyBtn');
-  const modalClose = document.getElementById('modalClose');
-  const modalCloseBtn = document.getElementById('modalCloseBtn');
-  const modalSendBtn = document.getElementById('modalSendBtn');
-
-  const adminToggle = document.getElementById('adminToggle');
-  const adminPanel = document.getElementById('adminPanel');
-  const adminClose = document.getElementById('adminClose');
-  const adminAuth = document.getElementById('adminAuth');
-  const adminMain = document.getElementById('adminMain');
-  const adminCode = document.getElementById('adminCode');
-  const authLogin = document.getElementById('authLogin');
-  const authCancel = document.getElementById('authCancel');
-
-  const adminLinkInput = document.getElementById('adminLinkInput');
-  const adminLoad = document.getElementById('adminLoad');
-  const adminClear = document.getElementById('adminClear');
-  const adminForm = document.getElementById('adminForm');
-  const adminPreview = document.getElementById('adminPreview');
-  const adminReason = document.getElementById('adminReason');
-  const adminSave = document.getElementById('adminSave');
-  const adminCancel = document.getElementById('adminCancel');
-  const statusOptions = document.getElementById('statusOptions');
-  const adminToast = document.getElementById('adminToast');
-
-  let currentAdminData = null;
-  let currentAnketaId = null;
-  let selectedStatus = 'pending';
-
-  // ===== ХРАНИЛИЩЕ РЕШЕНИЙ (localStorage) =====
-  function loadDecisions() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    } catch(e) {
-      return {};
-    }
-  }
-
-  function saveDecision(anketaId, status, reason) {
-    const all = loadDecisions();
-    all[anketaId] = { st: status, rs: reason, updated: Date.now() };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
-  }
-
-  function getDecision(anketaId) {
-    const all = loadDecisions();
-    return all[anketaId] || null;
-  }
-
-  // ===== КОДИРОВАНИЕ =====
-  function encodeData(obj) {
-    const json = JSON.stringify(obj);
-    return btoa(unescape(encodeURIComponent(json)))
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=+$/, '');
-  }
-
-  function decodeData(str) {
-    try {
-      let s = str.replace(/-/g, '+').replace(/_/g, '/');
-      while (s.length % 4) s += '=';
-      const json = decodeURIComponent(escape(atob(s)));
-      return JSON.parse(json);
-    } catch (e) {
-      return null;
-    }
-  }
-
-  // Уникальный ID анкеты на основе данных (чтобы ссылка всегда была та же)
-  function getAnketaId(data) {
-    return (data.t || 0).toString();
-  }
-
-  // ===== МОДАЛКА =====
-  function openModal(link) {
-    modalLink.value = link;
-    modalOverlay.classList.add('active');
-  }
-
-  function closeModal() {
-    modalOverlay.classList.remove('active');
-    modalCopyBtn.classList.remove('copied');
-    modalCopyBtn.innerHTML = '📋 Скопировать';
-  }
-
-  modalClose.addEventListener('click', closeModal);
-  modalCloseBtn.addEventListener('click', closeModal);
-  modalOverlay.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) closeModal();
-  });
-
-  modalCopyBtn.addEventListener('click', function () {
-    modalLink.select();
-    modalLink.setSelectionRange(0, 99999);
-    const onSuccess = () => {
-      modalCopyBtn.classList.add('copied');
-      modalCopyBtn.innerHTML = '✅ Скопировано!';
-      setTimeout(() => {
-        modalCopyBtn.classList.remove('copied');
-        modalCopyBtn.innerHTML = '📋 Скопировать';
-      }, 2000);
-    };
-    navigator.clipboard.writeText(modalLink.value).then(onSuccess).catch(() => {
-      document.execCommand('copy');
-      onSuccess();
-    });
-  });
-
-  modalSendBtn.addEventListener('click', function () {
-    const text = `Анкета в клан Malboro:\n${modalLink.value}`;
-    window.open(`${ADMIN_CONTACT}?text=${encodeURIComponent(text)}`, '_blank');
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      if (modalOverlay.classList.contains('active')) closeModal();
-      if (adminPanel.classList.contains('active')) closeAdminPanel();
-    }
-  });
-
-  // ===== ФОРМА =====
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const data = {
-      n: document.getElementById('realName').value.trim(),
-      k: document.getElementById('nickname').value.trim(),
-      c: document.getElementById('callsign').value.trim() || '—',
-      e: document.getElementById('experience').value,
-      a: document.getElementById('age').value.trim() || '—',
-      s: document.querySelector('input[name="serve"]:checked')?.value || '—',
-      p: document.getElementById('playtime').value.trim() || '—',
-      t: Date.now()
-    };
-
-    const code = encodeData(data);
-    const baseUrl = window.location.origin + window.location.pathname;
-    const link = `${baseUrl}#anketa=${code}`;
-
-    openModal(link);
-  });
-
-  // ===== РЕНДЕР АНКЕТЫ =====
-  function renderAnketa(data) {
-    const fields = [
-      { key: '1. Реальное имя', value: data.n },
-      { key: '2. Игровой ник-нейм', value: data.k },
-      { key: '3. Позывной', value: data.c },
-      { key: '4. Уровень игрока', value: data.e },
-      { key: '5. Возраст', value: data.a },
-      { key: '6. Готов служить клану', value: data.s, yesNo: true },
-      { key: '7. Время в игре', value: data.p }
-    ];
-
-    const body = document.getElementById('anketaBody');
-    body.innerHTML = fields.map(f => {
-      let cls = '';
-      if (f.yesNo) cls = f.value === 'Да' ? 'yes' : 'no';
-      return `
-        <div class="anketa-row">
-          <div class="key">${f.key}</div>
-          <div class="value ${cls}">${escapeHtml(String(f.value))}</div>
-        </div>
-      `;
-    }).join('');
-
-    const id = getAnketaId(data);
-    document.getElementById('anketaId').textContent = '#' + id.slice(-6);
-
-    // Подтягиваем сохранённое решение из localStorage по ID анкеты
-    const saved = getDecision(id);
-    const status = saved ? saved.st : 'pending';
-    const reason = saved ? saved.rs : '';
-
-    renderStatus(status, reason);
-  }
-
-  function renderStatus(st, reason) {
-    const statusBox = document.getElementById('statusBox');
-    reason = (reason || '').trim();
-    let html = '';
-
-    if (st === 'accepted') {
-      html = `
-        <div class="status-box status-accepted">
-          <div class="status-title">✅ Заявка принята</div>
-          <div>Добро пожаловать в клан Malboro!</div>
-          ${reason ? `<div class="status-reason"><b>Комментарий админа:</b><br>${escapeHtml(reason)}</div>` : ''}
-        </div>`;
-    } else if (st === 'rejected') {
-      html = `
-        <div class="status-box status-rejected">
-          <div class="status-title">❌ Заявка отклонена</div>
-          <div>К сожалению, вы не подошли клану.</div>
-          ${reason ? `<div class="status-reason"><b>Причина отказа:</b><br>${escapeHtml(reason)}</div>` : ''}
-        </div>`;
-    } else {
-      html = `
-        <div class="status-box status-pending">
-          <div class="status-title">⏳ Заявка на рассмотрении</div>
-          <div>Ожидайте решения администрации клана.</div>
-          ${reason ? `<div class="status-reason"><b>Комментарий:</b><br>${escapeHtml(reason)}</div>` : ''}
-        </div>`;
-    }
-
-    statusBox.innerHTML = html;
-  }
-
-  function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, m => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;',
-      '"': '&quot;', "'": '&#39;'
-    })[m]);
-  }
-
-  // ===== РОУТИНГ =====
-  function route() {
-    const hash = window.location.hash;
-
-    if (hash.startsWith('#anketa=')) {
-      const code = hash.substring(8);
-      const data = decodeData(code);
-
-      if (data && data.n && data.k) {
-        formPage.classList.add('hidden');
-        errorPage.classList.remove('active');
-        viewPage.classList.add('active');
-        renderAnketa(data);
-        window.scrollTo(0, 0);
-        return;
-      } else {
-        formPage.classList.add('hidden');
-        viewPage.classList.remove('active');
-        errorPage.classList.add('active');
-        return;
-      }
-    }
-
-    formPage.classList.remove('hidden');
-    viewPage.classList.remove('active');
-    errorPage.classList.remove('active');
-  }
-
-  function goBack(e) {
-    e.preventDefault();
-    window.location.hash = '';
-    window.location.reload();
-  }
-
-  window.addEventListener('hashchange', route);
-  window.addEventListener('DOMContentLoaded', route);
-
-  // ===== АДМИН-ПАНЕЛЬ =====
-  function openAdminPanel() {
-    adminPanel.classList.add('active');
-    adminCode.value = '';
-    adminAuth.style.display = 'block';
-    adminMain.style.display = 'none';
-    adminForm.style.display = 'none';
-    adminLinkInput.value = '';
-    adminReason.value = '';
-    currentAdminData = null;
-    currentAnketaId = null;
-    selectedStatus = 'pending';
-    updateStatusOptions();
-  }
-
-  function closeAdminPanel() {
-    adminPanel.classList.remove('active');
-  }
-
-  adminToggle.addEventListener('click', openAdminPanel);
-  adminClose.addEventListener('click', closeAdminPanel);
-  adminPanel.addEventListener('click', (e) => {
-    if (e.target === adminPanel) closeAdminPanel();
-  });
-
-  authLogin.addEventListener('click', () => {
-    if (adminCode.value.trim() === ADMIN_CODE) {
-      adminAuth.style.display = 'none';
-      adminMain.style.display = 'block';
-      showToast('✅ Доступ разрешён');
-    } else {
-      showToast('❌ Неверный код доступа', true);
-    }
-  });
-
-  adminCode.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') authLogin.click();
-  });
-
-  authCancel.addEventListener('click', closeAdminPanel);
-
-  // ===== ЗАГРУЗКА АНКЕТЫ =====
-  adminLoad.addEventListener('click', () => {
-    const raw = adminLinkInput.value.trim();
-    if (!raw) return showToast('⚠️ Вставьте ссылку', true);
-
-    let code = null;
-    const idx = raw.indexOf('#anketa=');
-    if (idx !== -1) code = raw.substring(idx + 8);
-    else code = raw;
-
-    const data = decodeData(code);
-    if (!data || !data.n || !data.k) {
-      return showToast('❌ Не удалось прочитать анкету', true);
-    }
-
-    currentAdminData = data;
-    currentAnketaId = getAnketaId(data);
-
-    // Подтягиваем существующее решение, если есть
-    const existing = getDecision(currentAnketaId);
-    selectedStatus = existing ? existing.st : 'pending';
-    adminReason.value = existing ? existing.rs : '';
-
-    renderAdminPreview(data);
-    updateStatusOptions();
-    adminForm.style.display = 'block';
-    showToast('✅ Анкета загружена');
-  });
-
-  adminClear.addEventListener('click', () => {
-    adminLinkInput.value = '';
-    adminForm.style.display = 'none';
-    currentAdminData = null;
-    currentAnketaId = null;
-  });
-
-  function renderAdminPreview(data) {
-    const fields = [
-      { key: '1. Реальное имя', value: data.n },
-      { key: '2. Игровой ник', value: data.k },
-      { key: '3. Позывной', value: data.c },
-      { key: '4. Уровень', value: data.e },
-      { key: '5. Возраст', value: data.a },
-      { key: '6. Готов служить', value: data.s, yesNo: true },
-      { key: '7. Время в игре', value: data.p }
-    ];
-
-    adminPreview.innerHTML = fields.map(f => {
-      let cls = '';
-      if (f.yesNo) cls = f.value === 'Да' ? 'yes' : 'no';
-      return `<div class="preview-row">
-        <span class="pk">${f.key}</span>
-        <span class="pv ${cls}">${escapeHtml(String(f.value))}</span>
-      </div>`;
-    }).join('');
-  }
-
-  // ===== ВЫБОР СТАТУСА =====
-  statusOptions.querySelectorAll('.status-option').forEach(opt => {
-    opt.addEventListener('click', () => {
-      selectedStatus = opt.dataset.status;
-      updateStatusOptions();
-    });
-  });
-
-  function updateStatusOptions() {
-    statusOptions.querySelectorAll('.status-option').forEach(opt => {
-      opt.classList.toggle('selected', opt.dataset.status === selectedStatus);
-    });
-  }
-
-  // ===== СОХРАНЕНИЕ (в ту же самую ссылку!) =====
-  adminSave.addEventListener('click', () => {
-    if (!currentAdminData || !currentAnketaId) {
-      return showToast('⚠️ Сначала загрузите анкету', true);
-    }
-
-    // Сохраняем решение в localStorage по ID анкеты
-    saveDecision(currentAnketaId, selectedStatus, adminReason.value.trim());
-
-    showToast('✅ Решение сохранено! Ссылка не изменилась — откройте её заново для проверки');
-  });
-
-  adminCancel.addEventListener('click', () => {
-    adminForm.style.display = 'none';
-    adminLinkInput.value = '';
-    adminReason.value = '';
-    currentAdminData = null;
-    currentAnketaId = null;
-    selectedStatus = 'pending';
-    updateStatusOptions();
-  });
-
-  // ===== ТОСТ =====
-  let toastTimer = null;
-  function showToast(msg, isError = false) {
-    adminToast.textContent = msg;
-    adminToast.classList.toggle('error', !!isError);
-    adminToast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      adminToast.classList.remove('show');
-    }, 3200);
-  }
+    window.dataLayer = window.dataLayer || [];
+    window.app.analytics.addEvents([]);
 </script>
+
+<script type="text/javascript">
+    var isYandexMetricaInitialized = false;
+    var yandexMetricaReferrer = document.referrer;
+    var yandexMetricaUrl = location.href;
+
+    function initYM() {
+        if (isYandexMetricaInitialized) {
+            return;
+        }
+        isYandexMetricaInitialized = true;
+
+        (function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for (var j = 0; j < document.scripts.length; j++) {
+                if (document.scripts[j].src === r) {
+                    return;
+                }
+            }
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+        })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+
+        ym(36956765, "init", {
+            clickmap: false,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: false,
+            ut: "noindex",
+            referrer: yandexMetricaReferrer,
+            url: yandexMetricaUrl,
+            ecommerce: "dataLayer"
+        });
+    }
+        initYM();
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/36956765?ut=noindex" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<div class="wrapper">
+    <div class="wrapper-content">
+                        <header id="header">
+            <div class="container">
+                <div id="global-origin"></div>
+                <nav class="navbar navbar-default">
+                    <div class="hide-navbar"></div>
+                    <div class="container-fluid">
+                        <div class="navbar-header">
+                                                            <button type="button" class="collapsed navbar-toggle navbar-toggle-logged" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
+                                    <span class="user-link-photo"><img src="https://sfunpay.com/s/avatar/pl/qy/plqyv2460jgxxzlrkul0.jpg" alt=""></span>
+                                    <span class="caret"></span>
+                                </button>
+                                                                    <a href="https://funpay.com/chat/" class="navbar-xs-icon icon-chat">
+                                        <svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="12"/><polygon points="26 26, 12 20, 20 12"/></svg>
+                                        <span></span>
+                                    </a>
+                                                                                        <a href="https://funpay.com/" class="navbar-brand">
+                                                                <img src="/img/layout/logo-funpay.svg" alt="FunPay" class="logo-color"/>
+                            </a>
+                            <form action="https://funpay.com/games/promoFilter" method="post" class="navbar-form navbar-left dropdown promo-games-filter">
+                                <div class="form-group">
+                                    <input type="text" name="query" class="form-control dropdown-toggle" data-toggle="dropdown" role="searchbox" placeholder="Поиск по 899 играм" autocomplete="off"/>
+                                    <div class="dropdown-menu dropdown-autocomplete hidden"></div>
+                                </div>
+                                <button type="submit" class="btn btn-link"><i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+                        <div class="nav-container">
+                            <div class="collapse navbar-collapse no-transition" id="navbar">
+                                <ul class="nav navbar-nav">
+                                                                                <li class="visible-xs visible-sm">
+        <a href="https://funpay.com/users/19423018/" class="user-link-dropdown">
+            <div class="user-link-name">SwagaLorryShop</div>
+            <div class="user-link-desc">Профиль</div>
+        </a>
+    </li>                                                                                                                <li class="dropdown"><a href="https://funpay.com/" class="menu-item-info dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Помощь <span class="caret"></span></a><ul class="dropdown-menu"><li><a href="https://funpay.com/trade/info" class="menu-item-trade_info">Правила</a></li>
+<li><a href="https://support.funpay.com/" class="menu-item-support" target="_blank">Центр помощи</a></li>
+<li><a href="https://support.funpay.com/tickets/new" class="menu-item-request" target="_blank">Отправить запрос</a></li>
+<li><a href="https://support.funpay.com/tickets" class="menu-item-requests" target="_blank">Мои запросы</a></li></ul></li>                                                                            <li><a href="https://funpay.com/promo/lootery" class="menu-item-lootery">Лутерея</a></li>                                                                    </ul>
+                                <ul class="nav navbar-nav navbar-right logged">
+                                                                            <li><a href="https://funpay.com/orders/" class="menu-item-orders">Покупки <span class="badge badge-orders hidden">0</span></a></li>                                                                            <li><a href="https://funpay.com/orders/trade" class="menu-item-trade">Продажи <span class="badge badge-trade">5</span></a></li>                                                                            <li class="active"><a href="https://funpay.com/chat/" class="menu-item-chat">Сообщения <span class="badge badge-chat hidden">0</span></a></li>                                                                            <li><a href="https://funpay.com/account/balance" class="menu-item-balance">Финансы <span class="badge badge-balance">48 ₽</span></a></li>                                                                                                                <li class="dropdown hidden-sm hidden-xs">
+                                            <a href="javascript:void(0)" class="dropdown-toggle user-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                                <div class="user-link-photo"><img src="https://sfunpay.com/s/avatar/pl/qy/plqyv2460jgxxzlrkul0.jpg" alt=""/></div>
+                                                <span class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                    <li>
+        <a href="https://funpay.com/users/19423018/" class="user-link-dropdown">
+            <div class="user-link-name">SwagaLorryShop</div>
+            <div class="user-link-desc">Профиль</div>
+        </a>
+    </li>                                                <li><a href="https://funpay.com/account/settings" class="menu-item-settings">Настройки</a></li><li class="dropdown">
+    <a href="javascript:void(0)" class="dropdown-toggle menu-item-langs" data-toggle="dropdown">
+        По-русски <i class="menu-icon menu-icon-lang-ru"></i> <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+                    <li>
+                <a href="https://funpay.com/chat/?node=294608970&amp;setlocale=en" class="menu-item-lang">
+                    English <i class="menu-icon menu-icon-lang-en"></i>
+                </a>
+            </li>
+            </ul>
+</li><li class="dropdown">
+    <a href="javascript:void(0)" class="dropdown-toggle menu-item-currencies" data-toggle="dropdown">
+        Рубли <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+                    <li>
+                <a href="javascript:void(0)" data-cy="usd" class="user-cy-switcher menu-item-currency">
+                    Доллары                </a>
+            </li>
+                    <li>
+                <a href="javascript:void(0)" data-cy="eur" class="user-cy-switcher menu-item-currency">
+                    Евро                </a>
+            </li>
+            </ul>
+</li><li><a href="https://funpay.com/account/logout?token=70edeaf9e6cebb22" class="menu-item-logout">Выйти</a></li>                                            </ul>
+                                        </li>
+                                        <li class="visible-xs visible-sm"><a href="https://funpay.com/account/settings" class="menu-item-settings">Настройки</a></li><li class="visible-xs visible-sm dropdown">
+    <a href="javascript:void(0)" class="dropdown-toggle menu-item-langs" data-toggle="dropdown">
+        По-русски <i class="menu-icon menu-icon-lang-ru"></i> <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+                    <li>
+                <a href="https://funpay.com/chat/?node=294608970&amp;setlocale=en" class="menu-item-lang">
+                    English <i class="menu-icon menu-icon-lang-en"></i>
+                </a>
+            </li>
+            </ul>
+</li><li class="visible-xs visible-sm dropdown">
+    <a href="javascript:void(0)" class="dropdown-toggle menu-item-currencies" data-toggle="dropdown">
+        Рубли <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+                    <li>
+                <a href="javascript:void(0)" data-cy="usd" class="user-cy-switcher menu-item-currency">
+                    Доллары                </a>
+            </li>
+                    <li>
+                <a href="javascript:void(0)" data-cy="eur" class="user-cy-switcher menu-item-currency">
+                    Евро                </a>
+            </li>
+            </ul>
+</li><li class="visible-xs visible-sm"><a href="https://funpay.com/account/logout?token=70edeaf9e6cebb22" class="menu-item-logout">Выйти</a></li>                                                                    </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                                    <div id="chat-notification" class="hidden" data-message="0">
+                        <audio class="loud"><source src="/audio/chat_loud.mp3" type="audio/mpeg"></audio>
+                        <audio class="quiet"><source src="/audio/chat_quiet.mp3" type="audio/mpeg"></audio>
+                    </div>
+                                                                    <div id="live-counters" class="hidden" data-orders="lfm0oocn" data-chat=""></div>
+                                                </div>
+        </header>
+        
+        <section id="content-body">
+            <div class="search-fade"></div>
+                                                <div id="content" class="content-chat content-chat-index"><div class="chat-full-container">
+    <div class="container">
+                <div class="chat-full chat-bookmarks-nonempty moved">
+            <div class="chat-contacts">
+                                    <div class="chat-full-header">
+    <h1>Сообщения</h1>
+</div>
+<div class="contact-list custom-scroll">
+                    <a href="https://funpay.com/chat/?node=294625449" class="contact-item" data-id="294625449" data-node-msg="5228329925" data-user-msg="5228329925">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/b1/og/b1ogbs37v0jh29guugjo.jpg);"></div>
+            </div>
+            <div class="media-user-name">Fjfnbdxucjbf</div>
+                            <div class="contact-item-message">Вы можете перейти в Discord.
+• Если продавец заходит на канал, то он обязан дождаться покупателя.
+• Остерегайтесь: мошенник может зайти на канал под видом покупателя и предложить связаться напрямую. После этого его напарник зайдет на канал и обманет</div>
+                <div class="contact-item-time">18:18</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=294608970" class="contact-item active" data-id="294608970" data-node-msg="5228057859" data-user-msg="5228057859">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/xv/6s/xv6su1w3ms8lt4xtbcjz.jpg);"></div>
+            </div>
+            <div class="media-user-name">The250Phase</div>
+                            <div class="contact-item-message">благодарю</div>
+                <div class="contact-item-time">17:11</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=294560047" class="contact-item" data-id="294560047" data-node-msg="5227238042" data-user-msg="5227238042">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/6d/6w/6d6wcdrlob8yp0u8999q.jpg);"></div>
+            </div>
+            <div class="media-user-name">MozzeMoon</div>
+                            <div class="contact-item-message">Покупатель MozzeMoon подтвердил успешное выполнение заказа #KPX9ZQ8E и отправил деньги продавцу SwagaLorryShop.</div>
+                <div class="contact-item-time">13:08</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=294427144" class="contact-item" data-id="294427144" data-node-msg="5225423944" data-user-msg="5225423944">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">v0v4ik139</div>
+                            <div class="contact-item-message">Покупатель v0v4ik139 подтвердил успешное выполнение заказа #ZVA31H3H и отправил деньги продавцу SwagaLorryShop.</div>
+                <div class="contact-item-time">вчера</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293550625" class="contact-item" data-id="293550625" data-node-msg="5225098025" data-user-msg="5225098025">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/9u/xh/9uxhvnluy4pt57czum2a.jpg);"></div>
+            </div>
+            <div class="media-user-name">Koshak655</div>
+                            <div class="contact-item-message">Продавец SwagaLorryShop вернул деньги покупателю Koshak655 по заказу #XAHCHCMX.</div>
+                <div class="contact-item-time">вчера</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=294286141" class="contact-item" data-id="294286141" data-node-msg="5224599980" data-user-msg="5224599980">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">Artchick007</div>
+                            <div class="contact-item-message">Покупатель Artchick007 удалил отзыв к заказу #ERC91AHA.</div>
+                <div class="contact-item-time">вчера</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293664627" class="contact-item" data-id="293664627" data-node-msg="5222260425" data-user-msg="5222260425">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/jx/2f/jx2fxe34yl3ve42j6l88.jpg);"></div>
+            </div>
+            <div class="media-user-name">d1vanchik</div>
+                            <div class="contact-item-message">Продавец SwagaLorryShop вернул деньги покупателю d1vanchik по заказу #FTATGALH.</div>
+                <div class="contact-item-time">12.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=294011978" class="contact-item" data-id="294011978" data-node-msg="5218612826" data-user-msg="5218612826">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">Anonymous1233214</div>
+                            <div class="contact-item-message">Покупатель Anonymous1233214 написал отзыв к заказу #GRPHPA41.</div>
+                <div class="contact-item-time">11.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=294001364" class="contact-item" data-id="294001364" data-node-msg="5218302284" data-user-msg="5218302284">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">Djjffjdudj</div>
+                            <div class="contact-item-message">можно отзыв пожалуйста</div>
+                <div class="contact-item-time">11.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293947279" class="contact-item" data-id="293947279" data-node-msg="5217997796" data-user-msg="5217997796">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/fu/sj/fusjgice6mvmabrica1o.jpg);"></div>
+            </div>
+            <div class="media-user-name">Misha9631</div>
+                            <div class="contact-item-message">и себе теперь надо</div>
+                <div class="contact-item-time">11.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293962960" class="contact-item" data-id="293962960" data-node-msg="5217903257" data-user-msg="5217903257">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/qx/5a/qx5ay1pu8x9zwzi0kw3k.jpg);"></div>
+            </div>
+            <div class="media-user-name">WinterNight924</div>
+                            <div class="contact-item-message">Покупатель WinterNight924 написал отзыв к заказу #T8J53FXK.</div>
+                <div class="contact-item-time">11.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293925033" class="contact-item" data-id="293925033" data-node-msg="5217102256" data-user-msg="5217102256">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">Fgggggghjghh</div>
+                            <div class="contact-item-message">можно пожайлуста отзыв</div>
+                <div class="contact-item-time">11.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293671750" class="contact-item" data-id="293671750" data-node-msg="5216610553" data-user-msg="5216610553">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/xe/4j/xe4j87853z8eex7nbvb0.jpg);"></div>
+            </div>
+            <div class="media-user-name">dhsdsidhwjdjwkwjwof</div>
+                            <div class="contact-item-message">а есть еще Noob</div>
+                <div class="contact-item-time">11.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293802766" class="contact-item" data-id="293802766" data-node-msg="5215212391" data-user-msg="5215212391">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/x3/s0/x3s0h4y5non2n4pfctkn.jpg);"></div>
+            </div>
+            <div class="media-user-name">Helpyoursel</div>
+                            <div class="contact-item-message">сяб</div>
+                <div class="contact-item-time">10.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293766502" class="contact-item" data-id="293766502" data-node-msg="5214675667" data-user-msg="5214675667">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/6w/e8/6we8kij8ra45ozk8x2fz.jpg);"></div>
+            </div>
+            <div class="media-user-name">Slowy1488</div>
+                            <div class="contact-item-message">замена или возврат,могу 2 любых товара с профиля</div>
+                <div class="contact-item-time">10.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293766315" class="contact-item" data-id="293766315" data-node-msg="5214615429" data-user-msg="5214615429">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/4q/mj/4qmj7apehv5bzmuofhi7.jpg);"></div>
+            </div>
+            <div class="media-user-name">sadasdasdadsw122</div>
+                            <div class="contact-item-message">не работают сории</div>
+                <div class="contact-item-time">10.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292610920" class="contact-item" data-id="292610920" data-node-msg="5214489468" data-user-msg="5214489468">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/6h/pt/6hptubvl0f6k39hkllr2.jpg);"></div>
+            </div>
+            <div class="media-user-name">Hsshahskkaiai</div>
+                            <div class="contact-item-message">Покупатель Hsshahskkaiai подтвердил успешное выполнение заказа #P6VNVVEL и отправил деньги продавцу SwagaLorryShop.</div>
+                <div class="contact-item-time">10.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293749904" class="contact-item" data-id="293749904" data-node-msg="5214471593" data-user-msg="5214471593">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/1v/yp/1vypztxwmo49zjb651pa.jpg);"></div>
+            </div>
+            <div class="media-user-name">Virsay</div>
+                            <div class="contact-item-message">Покупатель SwagaLorryShop написал отзыв к заказу #ZU5NXM4B.</div>
+                <div class="contact-item-time">10.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293756781" class="contact-item" data-id="293756781" data-node-msg="5214459430" data-user-msg="5214459430">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">Dldmdmd</div>
+                            <div class="contact-item-message">Ку</div>
+                <div class="contact-item-time">10.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293715218" class="contact-item" data-id="293715218" data-node-msg="5213772115" data-user-msg="5213772115">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/aj/oe/ajoetuzwgyo3f4ffkdgq.jpg);"></div>
+            </div>
+            <div class="media-user-name">JohnyMain</div>
+                            <div class="contact-item-message">КУ</div>
+                <div class="contact-item-time">10.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293683346" class="contact-item" data-id="293683346" data-node-msg="5213350129" data-user-msg="5213350129">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/3v/6v/3v6vvgy6f0mrkmjbioe2.jpg);"></div>
+            </div>
+            <div class="media-user-name">Ex1zor1tist</div>
+                            <div class="contact-item-message">Спасибо! ​‍‌</div>
+                <div class="contact-item-time">10.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293676159" class="contact-item" data-id="293676159" data-node-msg="5213142113" data-user-msg="5213142113">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/be/1g/be1gnhc9nlf2b5lrpeay.jpg);"></div>
+            </div>
+            <div class="media-user-name">Sigmopdd</div>
+                            <div class="contact-item-message">Покупатель SwagaLorryShop написал отзыв к заказу #LG17JF49.</div>
+                <div class="contact-item-time">10.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293582148" class="contact-item" data-id="293582148" data-node-msg="5211686506" data-user-msg="5211686506">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/5q/1i/5q1igsok0tu26sibqerw.jpg);"></div>
+            </div>
+            <div class="media-user-name">WholtherWhite</div>
+                            <div class="contact-item-message">Покупатель WholtherWhite подтвердил успешное выполнение заказа #YCH5CJQG и отправил деньги продавцу SwagaLorryShop.</div>
+                <div class="contact-item-time">10.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293538853" class="contact-item" data-id="293538853" data-node-msg="5210989256" data-user-msg="5210989256">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">zxsbabka</div>
+                            <div class="contact-item-message">Вы можете перейти в Discord.
+• Если продавец заходит на канал, то он обязан дождаться покупателя.
+• Остерегайтесь: мошенник может зайти на канал под видом покупателя и предложить связаться напрямую. После этого его напарник зайдет на канал и обманет</div>
+                <div class="contact-item-time">09.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293521472" class="contact-item" data-id="293521472" data-node-msg="5210710840" data-user-msg="5210710840">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/aq/2h/aq2h736ltgiq0p04kpz1.jpg);"></div>
+            </div>
+            <div class="media-user-name">Popsmops</div>
+                            <div class="contact-item-message">это и есть ваша игра</div>
+                <div class="contact-item-time">09.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293516288" class="contact-item" data-id="293516288" data-node-msg="5210616303" data-user-msg="5210616303">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/x7/rw/x7rws5b0tu7dtwlyijrr.jpg);"></div>
+            </div>
+            <div class="media-user-name">SwiftKey4216</div>
+                            <div class="contact-item-message">ключ вводится в рок старе</div>
+                <div class="contact-item-time">09.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293303698" class="contact-item" data-id="293303698" data-node-msg="5207164809" data-user-msg="5207164809">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/5n/0m/5n0mu8croo9d3qx5s1hv.jpg);"></div>
+            </div>
+            <div class="media-user-name">MullanShop</div>
+                            <div class="contact-item-message">Вы можете перейти в Discord.
+• Если продавец заходит на канал, то он обязан дождаться покупателя.
+• Остерегайтесь: мошенник может зайти на канал под видом покупателя и предложить связаться напрямую. После этого его напарник зайдет на канал и обманет</div>
+                <div class="contact-item-time">08.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293146267" class="contact-item" data-id="293146267" data-node-msg="5207145987" data-user-msg="5207145987">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/af/ke/afke9x9vbn3fj8mg4c8z.jpg);"></div>
+            </div>
+            <div class="media-user-name">duregod</div>
+                            <div class="contact-item-message">Продавец SwagaLorryShop вернул деньги покупателю duregod по заказу #FVL2ETTX.</div>
+                <div class="contact-item-time">08.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293096595" class="contact-item" data-id="293096595" data-node-msg="5206947183" data-user-msg="5206947183">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">ORejK</div>
+                            <div class="contact-item-message">Покупатель ORejK подтвердил успешное выполнение заказа #R26GMUPM и отправил деньги продавцу SwagaLorryShop.</div>
+                <div class="contact-item-time">08.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293145899" class="contact-item" data-id="293145899" data-node-msg="5204715691" data-user-msg="5204715691">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/lx/z0/lxz0j8djb4nuy4mfbex9.jpg);"></div>
+            </div>
+            <div class="media-user-name">dripuser</div>
+                            <div class="contact-item-message">Покупатель dripuser подтвердил успешное выполнение заказа #LKMTVNLS и отправил деньги продавцу SwagaLorryShop.</div>
+                <div class="contact-item-time">07.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293069790" class="contact-item" data-id="293069790" data-node-msg="5204008139" data-user-msg="5204008139">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/j8/3c/j83ctwtgwqofvp8xvzmz.jpg);"></div>
+            </div>
+            <div class="media-user-name">qizzps</div>
+                            <div class="contact-item-message">Покупатель qizzps написал отзыв к заказу #UGM1XDMS.</div>
+                <div class="contact-item-time">07.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=293056077" class="contact-item" data-id="293056077" data-node-msg="5203298323" data-user-msg="5203298323">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/ho/lm/holmhmcc29og0h0t8t9i.jpg);"></div>
+            </div>
+            <div class="media-user-name">leonchikfun</div>
+                            <div class="contact-item-message">привет!можно отзыв?</div>
+                <div class="contact-item-time">07.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292909778" class="contact-item" data-id="292909778" data-node-msg="5201021118" data-user-msg="5201021118">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/8z/uz/8zuzbn6lh7c8fnkb4v4s.jpg);"></div>
+            </div>
+            <div class="media-user-name">AdMarmelad</div>
+                            <div class="contact-item-message">*до свидания</div>
+                <div class="contact-item-time">06.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292907035" class="contact-item" data-id="292907035" data-node-msg="5200963110" data-user-msg="5200963110">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/h6/7x/h67xk3ey99oswwdgvxq9.jpg);"></div>
+            </div>
+            <div class="media-user-name">SaidTop4ik</div>
+                            <div class="contact-item-message">Продавец SaidTop4ik ответил на отзыв к заказу #QA6ZVV7G.</div>
+                <div class="contact-item-time">06.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292908410" class="contact-item" data-id="292908410" data-node-msg="5200952920" data-user-msg="5200952920">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/gi/tx/gitx9ycn3diralrgi4pm.jpg);"></div>
+            </div>
+            <div class="media-user-name">vovan342120</div>
+                            <div class="contact-item-message">Продавец vovan342120 ответил на отзыв к заказу #V79LN7D3.</div>
+                <div class="contact-item-time">06.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292908023" class="contact-item" data-id="292908023" data-node-msg="5200942755" data-user-msg="5200942755">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">reb542s</div>
+                            <div class="contact-item-message">Покупатель SwagaLorryShop написал отзыв к заказу #G25SY52K.</div>
+                <div class="contact-item-time">06.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292897471" class="contact-item" data-id="292897471" data-node-msg="5200941477" data-user-msg="5200941477">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">Olegonnnn</div>
+                            <div class="contact-item-message">Всегда пожалуйста</div>
+                <div class="contact-item-time">06.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292906553" class="contact-item" data-id="292906553" data-node-msg="5200916638" data-user-msg="5200916638">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/oy/rq/oyrqy583o3tpmlj3ueof.jpg);"></div>
+            </div>
+            <div class="media-user-name">AmabithYT1</div>
+                            <div class="contact-item-message">Продавец AmabithYT1 ответил на отзыв к заказу #W9TYXZVW.</div>
+                <div class="contact-item-time">06.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292906212" class="contact-item" data-id="292906212" data-node-msg="5200912717" data-user-msg="5200912717">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">xm9astt</div>
+                            <div class="contact-item-message">Покупатель SwagaLorryShop подтвердил успешное выполнение заказа #XB6A6XVC и отправил деньги продавцу xm9astt.</div>
+                <div class="contact-item-time">06.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292843394" class="contact-item" data-id="292843394" data-node-msg="5199902438" data-user-msg="5199902438">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/c4/im/c4im03mpic3krucd8p0p.jpg);"></div>
+            </div>
+            <div class="media-user-name">Bubochkasigma</div>
+                            <div class="contact-item-message">модели не делаю</div>
+                <div class="contact-item-time">06.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292727422" class="contact-item" data-id="292727422" data-node-msg="5199436181" data-user-msg="5199436181">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/6r/eq/6reqs2fba8cqtxhbpvmy.jpg);"></div>
+            </div>
+            <div class="media-user-name">btwelwee</div>
+                            <div class="contact-item-message">Подтвердите товар и оставьте отзыв</div>
+                <div class="contact-item-time">06.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=251011993" class="contact-item" data-id="251011993" data-node-msg="5198037464" data-user-msg="5198037464">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/3f/kz/3fkz649fcc9zxogig4al.jpg);"></div>
+            </div>
+            <div class="media-user-name">Arbyz2131</div>
+                            <div class="contact-item-message">Покупатель SwagaLorryShop подтвердил успешное выполнение заказа #EZ7GBP24 и отправил деньги продавцу Arbyz2131.</div>
+                <div class="contact-item-time">05.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292724577" class="contact-item" data-id="292724577" data-node-msg="5197998546" data-user-msg="5197998546">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/rz/d4/rzd4v1q1bg2xn79hhi0q.jpg);"></div>
+            </div>
+            <div class="media-user-name">Dim0nchikPP</div>
+                            <div class="contact-item-message">Продавец Dim0nchikPP ответил на отзыв к заказу #JJA67EFV.</div>
+                <div class="contact-item-time">05.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292723344" class="contact-item" data-id="292723344" data-node-msg="5197989502" data-user-msg="5197989502">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/ar/eu/areu8jx0efl7on74hgzb.jpg);"></div>
+            </div>
+            <div class="media-user-name">Dintrezz</div>
+                            <div class="contact-item-message">Продавец Dintrezz ответил на отзыв к заказу #EKX9A37Z.</div>
+                <div class="contact-item-time">05.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292393344" class="contact-item" data-id="292393344" data-node-msg="5193264933" data-user-msg="5193264933">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/a8/5g/a85g7w6svsthkveqa9d6.jpg);"></div>
+            </div>
+            <div class="media-user-name">WikkO</div>
+                            <div class="contact-item-message">говорю же</div>
+                <div class="contact-item-time">04.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292254943" class="contact-item" data-id="292254943" data-node-msg="5190595317" data-user-msg="5190595317">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(/img/layout/avatar.png);"></div>
+            </div>
+            <div class="media-user-name">Deniskk13</div>
+                            <div class="contact-item-message">угу</div>
+                <div class="contact-item-time">03.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=290008679" class="contact-item" data-id="290008679" data-node-msg="5189883564" data-user-msg="5189883564">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/rb/6o/rb6oaui7w9k5egtd4j1v.jpg);"></div>
+            </div>
+            <div class="media-user-name">KirillSolo</div>
+                            <div class="contact-item-message">Администратор Eva подтвердил успешное выполнение заказа #CHR3KV6A и отправил деньги продавцу KirillSolo.</div>
+                <div class="contact-item-time">03.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=292195652" class="contact-item" data-id="292195652" data-node-msg="5189692954" data-user-msg="5189692954">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/st/on/stonbtayerzvv04axf3u.jpg);"></div>
+            </div>
+            <div class="media-user-name">Neadvokat1</div>
+                            <div class="contact-item-message">ладно</div>
+                <div class="contact-item-time">03.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=291694224" class="contact-item" data-id="291694224" data-node-msg="5181665234" data-user-msg="5181665234">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/me/r0/mer0avm23jg3vqbdy0v9.jpg);"></div>
+            </div>
+            <div class="media-user-name">Legendan</div>
+                            <div class="contact-item-message">Покупатель SwagaLorryShop написал отзыв к заказу #PSCTA2PH.</div>
+                <div class="contact-item-time">01.10</div>
+                    </a>
+                    <a href="https://funpay.com/chat/?node=291666054" class="contact-item" data-id="291666054" data-node-msg="5181233522" data-user-msg="5181233522">
+            <div class="contact-item-photo">
+                <div class="avatar-photo" style="background-image: url(https://sfunpay.com/s/avatar/ko/25/ko25erxk7a4gwydibe2j.jpg);"></div>
+            </div>
+            <div class="media-user-name">MarkFilatov</div>
+                            <div class="contact-item-message">Спасибо за отзыв! Это очень помогает развитию. Обращайтесь ещё.</div>
+                <div class="contact-item-time">01.10</div>
+                    </a>
+    </div>                            </div>
+
+            <div class="js-chat-top"></div>
+<div class="chat chat-float" data-id="294608970" data-name="users-16279528-19423018" data-user="19423018" data-tag="u73rkt5y" data-bookmarks-tag="q4qbvx1s">
+    <div class="chat-header">
+                                <div class="media media-user offline">
+                <div class="media-left">
+                    <a href="https://funpay.com/users/16279528/"><img src="https://sfunpay.com/s/avatar/sk/cq/skcqrj45xtfbfe17ag3l.jpg" alt="" width="50" class="img-circle"></a>
+                </div>
+                <div class="media-body">
+                    <div class="media-user-name"><a href="https://funpay.com/users/16279528/">The250Phase</a></div>
+                    <div class="media-user-status">Был 45 минут назад</div>
+                </div>
+            </div>
+                <div class="chat-header-controls">
+                                        <span class="notice-button-container chat-control" data-color="gray">
+        <button type="button" class="btn btn-info-icon btn-info-sm btn-success">
+            <i class="fa fa-check icon"></i>
+            <span class="inside hidden-md hidden-xs">Включены<br>оповещения</span>
+        </button>
+    </span>                                        <div class="dropdown inline-block">
+                    <button class="btn btn-info-icon btn-info-sm btn-gray" type="button" data-toggle="dropdown">
+                        <i class="fa fa-ellipsis-h icon"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>
+                            <a href="https://support.funpay.com/tickets/new" target="_blank">Пожаловаться</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="form-ajax-simple" data-action="https://funpay.com/chat/mute" data-fields="{&quot;node_id&quot;:294608970,&quot;mute&quot;:1}">Заблокировать</a>
+                        </li>
+                    </ul>
+                </div>
+                                </div>
+                    <a class="chat-back"><i class="fa fa-chevron-left"></i></a>
+            </div>
+
+                    <div class="chat-panel-mobile">
+            <span class="text-light">Смотрит</span> <a href="https://funpay.com/lots/offer?id=67028174">Roblox, Studio, 😍КАЙФ😍30 платных,нужных плагинов [опписание], Мод, 9990 шт.</a>        </div>
+    
+    <div class="chat-message-container">
+        <div class="chat-message-list">
+                            <div class="chat-msg-item chat-msg-with-head" id="message-5228046770">
+    
+    <div class="chat-message">
+        
+        
+        
+                    <div class="media-user-name">
+                <a href="https://funpay.com/users/16279528/" class="chat-msg-author-link">The250Phase</a>                                <div class="chat-msg-date" title="14 октября, 17:08:34">17:08:34</div>
+            </div>
+        
+        <div class="chat-msg-body">
+                            <div class="chat-msg-text">что там есть ​‍‌</div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item" id="message-5228046927">
+    
+    <div class="chat-message">
+        
+        
+        
+        
+        <div class="chat-msg-body">
+                            <div class="chat-msg-text">⁡Здравствуйте! Чем могу помочь?</div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item" id="message-5228047497">
+    
+    <div class="chat-message">
+        
+        
+        
+        
+        <div class="chat-msg-body">
+                            <div class="chat-msg-text">что там есть ​‍‌</div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item chat-msg-with-head" id="message-5228048728">
+    
+    <div class="chat-message">
+        
+        
+        
+                    <div class="media-user-name">
+                <a href="https://funpay.com/users/19423018/" class="chat-msg-author-link">SwagaLorryShop</a>                                <div class="chat-msg-date" title="14 октября, 17:09:04">17:09:04</div>
+            </div>
+        
+        <div class="chat-msg-body">
+                            <div class="chat-msg-text">много крутых плагинов,даже Moon animator</div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item chat-msg-with-head" id="message-5228049561">
+    
+    <div class="chat-message">
+        
+        
+        
+                    <div class="media-user-name">
+                <a href="https://funpay.com/users/16279528/" class="chat-msg-author-link">The250Phase</a>                                <div class="chat-msg-date" title="14 октября, 17:09:16">17:09:16</div>
+            </div>
+        
+        <div class="chat-msg-body">
+                            <div class="chat-msg-text">ок</div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item chat-msg-with-head" id="message-5228051523">
+    
+    <div class="chat-message">
+        
+        
+        
+                    <div class="media-user-name">
+                FunPay                                    <span class="chat-msg-author-label label label-primary">оповещение</span>
+                                <div class="chat-msg-date" title="14 октября, 17:09:46">17:09:46</div>
+            </div>
+        
+        <div class="chat-msg-body">
+                            <div class="alert alert-with-icon alert-info" role="alert">
+                    <i class="fas fa-info-circle alert-icon"></i>
+                    <div class="chat-msg-text">Покупатель <a href="https://funpay.com/users/16279528/">The250Phase</a> оплатил <a href="https://funpay.com/orders/ACRZNNMC/">заказ #ACRZNNMC</a>. Roblox, Studio, 😍КАЙФ😍30 платных,нужных плагинов [опписание], Мод.
+<a href="https://funpay.com/users/16279528/">The250Phase</a>, не забудьте потом нажать кнопку «Подтвердить выполнение заказа».</div>
+                </div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item chat-msg-with-head" id="message-5228051525">
+    
+    <div class="chat-message">
+        
+        
+        
+                    <div class="media-user-name">
+                <a href="https://funpay.com/users/19423018/" class="chat-msg-author-link">SwagaLorryShop</a>                                    <span class="chat-msg-author-label label label-default">автоответ</span>
+                                <div class="chat-msg-date" title="14 октября, 17:09:46">17:09:46</div>
+            </div>
+        
+        <div class="chat-msg-body">
+                            <div class="chat-msg-text">ваш товар:<a href="https://drive.google.com/file/d/1Mb2AQQ8OqWlWxp_W-Fd5ht4l6U6t5aV_/view?usp=sharing" target="_blank" rel="nofollow noopener">https://drive.google.com/file/d/1Mb2AQQ8OqWlWxp_W-Fd5ht4l6U6t5aV_/view?usp=sharing</a></div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item chat-msg-with-head" id="message-5228051526">
+    
+    <div class="chat-message">
+        
+        
+        
+                    <div class="media-user-name">
+                FunPay                                    <span class="chat-msg-author-label label label-primary">оповещение</span>
+                                <div class="chat-msg-date" title="14 октября, 17:09:46">17:09:46</div>
+            </div>
+        
+        <div class="chat-msg-body">
+                            <div class="alert alert-with-icon alert-info" role="alert">
+                    <i class="fas fa-info-circle alert-icon"></i>
+                    <div class="chat-msg-text">Вы можете <a href="https://funpay.com/discord/channel?id=order-ACRZNNMC" target="_blank" rel="nofollow noopener">перейти в Discord</a>.
+• Если продавец заходит на канал, то он обязан дождаться покупателя.
+• Остерегайтесь: мошенник может зайти на канал под видом покупателя и предложить связаться напрямую. После этого его напарник зайдет на канал и обманет покупателя.
+• Общение за пределами сервера FunPay считается нарушением <a href="https://funpay.com/trade/info" target="_blank" rel="nofollow noopener">правил</a>.</div>
+                </div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item chat-msg-with-head" id="message-5228053250">
+    
+    <div class="chat-message">
+        
+        
+        
+                    <div class="media-user-name">
+                <a href="https://funpay.com/users/16279528/" class="chat-msg-author-link">The250Phase</a>                                <div class="chat-msg-date" title="14 октября, 17:10:11">17:10:11</div>
+            </div>
+        
+        <div class="chat-msg-body">
+                            <div class="chat-msg-text">ого</div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item" id="message-5228053378">
+    
+    <div class="chat-message">
+        
+        
+        
+        
+        <div class="chat-msg-body">
+                            <div class="chat-msg-text">все такое же ​‍‌</div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item" id="message-5228053928">
+    
+    <div class="chat-message">
+        
+        
+        
+        
+        <div class="chat-msg-body">
+                            <div class="chat-msg-text">НИЧЕГО не поменялось из прошлых ​‍‌</div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item" id="message-5228056348">
+    
+    <div class="chat-message">
+        
+        
+        
+        
+        <div class="chat-msg-body">
+                            <div class="chat-msg-text">ладно спс ​‍‌</div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item chat-msg-with-head" id="message-5228056509">
+    
+    <div class="chat-message">
+        
+        
+        
+                    <div class="media-user-name">
+                FunPay                                    <span class="chat-msg-author-label label label-primary">оповещение</span>
+                                <div class="chat-msg-date" title="14 октября, 17:11:00">17:11:00</div>
+            </div>
+        
+        <div class="chat-msg-body">
+                            <div class="alert alert-with-icon alert-info" role="alert">
+                    <i class="fas fa-info-circle alert-icon"></i>
+                    <div class="chat-msg-text">Покупатель <a href="https://funpay.com/users/16279528/">The250Phase</a> подтвердил успешное выполнение <a href="https://funpay.com/orders/ACRZNNMC/">заказа #ACRZNNMC</a> и отправил деньги продавцу <a href="https://funpay.com/users/19423018/">SwagaLorryShop</a>.</div>
+                </div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item chat-msg-with-head" id="message-5228057260">
+    
+    <div class="chat-message">
+        
+        
+        
+                    <div class="media-user-name">
+                FunPay                                    <span class="chat-msg-author-label label label-primary">оповещение</span>
+                                <div class="chat-msg-date" title="14 октября, 17:11:12">17:11:12</div>
+            </div>
+        
+        <div class="chat-msg-body">
+                            <div class="alert alert-with-icon alert-info" role="alert">
+                    <i class="fas fa-info-circle alert-icon"></i>
+                    <div class="chat-msg-text">Покупатель <a href="https://funpay.com/users/16279528/">The250Phase</a> написал отзыв к <a href="https://funpay.com/orders/ACRZNNMC/">заказу #ACRZNNMC</a>.</div>
+                </div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item chat-msg-with-head" id="message-5228057578">
+    
+    <div class="chat-message">
+        
+        
+        
+                    <div class="media-user-name">
+                FunPay                                    <span class="chat-msg-author-label label label-primary">оповещение</span>
+                                <div class="chat-msg-date" title="14 октября, 17:11:17">17:11:17</div>
+            </div>
+        
+        <div class="chat-msg-body">
+                            <div class="alert alert-with-icon alert-info" role="alert">
+                    <i class="fas fa-info-circle alert-icon"></i>
+                    <div class="chat-msg-text">Покупатель <a href="https://funpay.com/users/16279528/">The250Phase</a> изменил отзыв к <a href="https://funpay.com/orders/ACRZNNMC/">заказу #ACRZNNMC</a>.</div>
+                </div>
+            
+            
+                    </div>
+
+            </div>
+</div>                            <div class="chat-msg-item chat-msg-with-head" id="message-5228057859">
+    
+    <div class="chat-message">
+        
+        
+        
+                    <div class="media-user-name">
+                <a href="https://funpay.com/users/19423018/" class="chat-msg-author-link">SwagaLorryShop</a>                                <div class="chat-msg-date" title="14 октября, 17:11:21">17:11:21</div>
+            </div>
+        
+        <div class="chat-msg-body">
+                            <div class="chat-msg-text">благодарю</div>
+            
+            
+                    </div>
+
+            </div>
+</div>                    </div>
+            </div>
+
+    <div class="chat-form">
+        <form action="https://funpay.com/chat/message" method="post">
+            <div class="chat-form-input">
+                <div class="form-group" id="comments">
+                    <textarea class="form-control" name="content" cols="30" rows="1" placeholder="Написать..." autofocus></textarea>
+                </div>
+            </div>
+                            <div class="chat-form-attach">
+                    <button type="button" class="btn btn-default chat-btn-image" data-size-max="7340032" data-size-max-str="7 МБ">
+                        <i class="fa fa-paperclip"></i></button>
+                </div>
+                        <div class="chat-form-btn">
+                <button type="submit" class="btn btn-gray btn-round"><i class="fa fa-arrow-right"></i></button>
+            </div>
+        </form>
+    </div>
+</div>
+            <div class="chat-detail">
+                <div class="chat-detail-list custom-scroll">
+                                            <div class="param-item">
+                            <h5>Дата регистрации</h5>
+                            <div>
+                                22 августа 2025, 20:21<br>
+                                год назад                            </div>
+                        </div>
+                                                                                                                <div class="param-item chat-panel" data-type="c-p-u" data-id="16279528" data-tag="ufwaxl1r">
+                            <h5>Покупатель смотрит</h5>
+        <div><a href="https://funpay.com/lots/offer?id=67028174">Roblox, Studio, 😍КАЙФ😍30 платных,нужных плагинов [опписание], Мод, 9990 шт.</a></div>                        </div>
+                                    </div>
+            </div>
+        </div>
+    </div>
+</div></div>        </section>
+    </div>
+
+    </div>
 
 </body>
 </html>
