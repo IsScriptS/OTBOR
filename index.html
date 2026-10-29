@@ -186,6 +186,8 @@
   .desc-box b { color:#fff; }
   .desc-box .hl { color:var(--accent2); font-weight:600; }
   .desc-box .warn { color:#ff8fa3; font-weight:700; }
+  .desc-box ul { margin:8px 0 0 18px; padding:0; }
+  .desc-box ul li { margin-bottom:4px; }
   .desc-box ol { margin:8px 0 0 18px; padding:0; }
   .desc-box ol li { margin-bottom:4px; }
 
@@ -391,6 +393,9 @@
 </div>
 
 <script>
+/* =========================================================
+   ДАННЫЕ ТОВАРОВ
+   ========================================================= */
 const PRODUCTS = [
   {
     id: 'white-ghost',
@@ -405,8 +410,7 @@ const PRODUCTS = [
     type: 'link',
     link: 'https://www.roblox.com/share?code=8c7d0ba77f00d141a4a87dd6ede93c85&type=Server',
     linkTitle: '🔗 Ссылка на сервер раздачи',
-    note: 'Заходите на сервер в часы раздачи: <b>18:00, 19:00, 20:00</b>.<br>В остальное время раздача закрыта.',
-    codes: ['GHST-7K2M-9QW4-RT5Y']
+    note: 'Заходите на сервер в часы раздачи: <b>18:00, 19:00, 20:00</b>.<br>В остальное время раздача закрыта.'
   },
   {
     id: 'pack-2000',
@@ -424,8 +428,7 @@ const PRODUCTS = [
           '<ol>' +
             '<li>В Roblox Studio нажмите <b>Файл → Открыть из файла</b><br>(File → Open from File).</li>' +
             '<li>Выберите ваш <b>.rbxl</b> файл.</li>' +
-          '</ol>',
-    codes: ['PACK-8N4V-2XJ6-LM3Z']
+          '</ol>'
   },
   {
     id: 'plugins-30',
@@ -438,8 +441,7 @@ const PRODUCTS = [
     type: 'link',
     link: 'https://drive.google.com/file/d/1Mb2AQQ8OqWlWxp_W-Fd5ht4l6U6t5aV_/view?usp=sharing',
     linkTitle: '🧩 Ссылка на 30 платных плагинов',
-    note: 'Скачайте архив по ссылке и установите плагины в Roblox Studio через <b>Plugins → Manage Plugins</b> или перетащите .rbxm файлы в папку Plugins.',
-    codes: ['PLUG-3K9M-7QX2-VN4B']
+    note: 'Скачайте архив по ссылке и установите плагины в Roblox Studio через <b>Plugins → Manage Plugins</b> или перетащите .rbxm файлы в папку Plugins.'
   },
   {
     id: 'copy-script',
@@ -464,8 +466,7 @@ local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. 
 
 local Options = {} -- Documentation here https://luau.github.io/UniversalSynSaveInstance/api/SynSaveInstance
 
-synsaveinstance(Options)`,
-    codes: ['COPY-5R8T-3WY7-NQ2M']
+synsaveinstance(Options)`
   },
   {
     id: 'gta5-map',
@@ -478,8 +479,7 @@ synsaveinstance(Options)`,
     type: 'link',
     link: 'https://drive.google.com/file/d/1NpS2h4yEAfdRyMvLt9F5c-dsVkm3L1EE/view?usp=sharing',
     linkTitle: '🗺️ Ссылка на карту GTA 5',
-    note: 'Скачайте файл по ссылке и используйте карту в своей игре или проекте.',
-    codes: ['GTA5-MAP-7K3Q']
+    note: 'Скачайте файл по ссылке и используйте карту в своей игре или проекте.'
   },
   {
     id: 'krasnoyarsk-winter',
@@ -487,7 +487,7 @@ synsaveinstance(Options)`,
     name: 'Красноярск зима',
     desc: 'Карта, скрипты, системы, зимнее обновление',
     fullDesc: 'В данный товар входит:<br>' +
-              '<ul style="margin:8px 0 0 18px;padding:0;">' +
+              '<ul>' +
                 '<li><b>Карта</b></li>' +
                 '<li><b>Скрипты</b></li>' +
                 '<li><b>Все системы</b></li>' +
@@ -498,8 +498,7 @@ synsaveinstance(Options)`,
     type: 'link',
     link: 'https://mega.nz/file/yxI1AAIL#oYLKO3gSm9HDVT0AK4ddE_4B8zrv5KUyPQ96xL4-DvU',
     linkTitle: '❄️ Ссылка на «Красноярск зима»',
-    note: 'Скачайте архив по ссылке и распакуйте. Внутри — карта, скрипты, все системы и зимнее обновление.',
-    codes: ['KRSK-WNTR-2025-XQ7M']
+    note: 'Скачайте архив по ссылке и распакуйте. Внутри — карта, скрипты, все системы и зимнее обновление.'
   },
   {
     id: 'bakhmut-trenches',
@@ -513,11 +512,59 @@ synsaveinstance(Options)`,
     type: 'link',
     link: 'https://mega.nz/file/S84EASbL#YornDA6L7d3j_lnORacRpaHIZCyVXUmi2X3oG0hKlHY',
     linkTitle: '🪖 Ссылка на карту «Бахмут + окопы»',
-    note: 'Скачайте файл по ссылке и используйте карту в своей РП-игре или шутере.',
-    codes: ['BHMUT-TRNC-2025-WR8K']
+    note: 'Скачайте файл по ссылке и используйте карту в своей РП-игре или шутере.'
   }
 ];
 
+/* =========================================================
+   ЗАШИФРОВАННЫЕ КОДЫ (перемешанные символы + карта порядка)
+   ========================================================= */
+const _S = {
+  'white-ghost': {
+    chars: ['5','T','G','9','H','-','W','2','R','S','7','4','T','K','Q','-','-','M','Y'],
+    order: [2,4,9,0,1,5,10,11,17,18,12,13,14,15,16,6,7,8,3]
+  },
+  'pack-2000': {
+    chars: ['3','Z','P','X','J','-','A','L','6','C','K','8','M','-','4','N','2','V','-'],
+    order: [2,6,9,10,5,11,15,17,16,12,13,14,7,8,3,4,18,0,1]
+  },
+  'plugins-30': {
+    chars: ['N','P','4','7','Q','-','V','L','M','9','X','-','U','G','3','2','B','K','-'],
+    order: [1,7,12,13,5,14,17,9,8,15,10,11,16,18,4,5,6,0,1]
+  },
+  'copy-script': {
+    chars: ['7','M','C','N','-','Q','5','O','R','2','P','-','Y','8','W','T','3','-','Y'],
+    order: [2,7,10,18,4,6,8,14,15,16,11,12,18,13,4,5,9,17,6]
+  },
+  'gta5-map': {
+    chars: ['K','3','G','Q','T','-','A','7','5','-','M','P','A'],
+    order: [2,4,6,8,5,10,12,1,7,2,11,3,9]
+  },
+  'krasnoyarsk-winter': {
+    chars: ['7','2','K','M','-','0','W','5','N','X','S','Q','R','T','K','-','R','0','2'],
+    order: [2,12,10,2,7,6,8,14,5,0,1,3,4,5,8,15,16,17,18]
+  },
+  'bakhmut-trenches': {
+    chars: ['8','W','B','R','C','-','M','K','U','5','T','-','0','N','2','H','T','R','0'],
+    order: [2,15,6,8,16,5,17,11,12,9,14,18,10,13,4,5,7,0,1]
+  }
+};
+
+/* Восстановление кода из перемешанных символов */
+function _buildCode(productId) {
+  const s = _S[productId];
+  if (!s) return '';
+  let out = '';
+  for (let i = 0; i < s.order.length; i++) {
+    const idx = s.order[i];
+    out += (s.chars[idx] !== undefined ? s.chars[idx] : '');
+  }
+  return out.toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
+/* =========================================================
+   СОСТОЯНИЕ И ХЕЛПЕРЫ
+   ========================================================= */
 let selectedProduct = null;
 
 function normalize(s) {
@@ -525,6 +572,22 @@ function normalize(s) {
 }
 function $(id) { return document.getElementById(id); }
 
+function plural(n, one, few, many) {
+  const mod10 = n % 10, mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return one;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+  return many;
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, m => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[m]));
+}
+
+/* =========================================================
+   РЕНДЕР КАТАЛОГА
+   ========================================================= */
 function renderCatalog() {
   const grid = $('productGrid');
   grid.innerHTML = '';
@@ -545,19 +608,9 @@ function renderCatalog() {
   });
 }
 
-function plural(n, one, few, many) {
-  const mod10 = n % 10, mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return one;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
-  return many;
-}
-
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, m => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[m]));
-}
-
+/* =========================================================
+   ВЫБОР ТОВАРА
+   ========================================================= */
 function selectProduct(id) {
   const product = PRODUCTS.find(p => p.id === id);
   if (!product) return;
@@ -590,6 +643,9 @@ function resetPurchaseUI() {
   $('result').querySelector('.result-title').textContent = '🔗 Ссылка';
 }
 
+/* =========================================================
+   АВТО-ФОРМАТИРОВАНИЕ ВВОДА КОДА
+   ========================================================= */
 $('codeInput').addEventListener('input', function () {
   let raw = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 16);
   const parts = [];
@@ -597,6 +653,9 @@ $('codeInput').addEventListener('input', function () {
   this.value = parts.join('-');
 });
 
+/* =========================================================
+   ПОЛУЧЕНИЕ (ПРОВЕРКА КОДА)
+   ========================================================= */
 $('redeemBtn').addEventListener('click', function () {
   if (!selectedProduct) return;
 
@@ -614,7 +673,9 @@ $('redeemBtn').addEventListener('click', function () {
     return;
   }
 
-  const isValid = selectedProduct.codes.some(c => normalize(c) === entered);
+  // Собираем настоящий код из перемешанных частей и сравниваем
+  const realCode = _buildCode(selectedProduct.id);
+  const isValid = realCode && realCode === entered;
 
   if (isValid) {
     msg.textContent = '✅ Код принят! Товар выдан ниже.';
@@ -637,6 +698,9 @@ $('redeemBtn').addEventListener('click', function () {
   }
 });
 
+/* =========================================================
+   РЕНДЕР РЕЗУЛЬТАТА (ссылка или скрипт)
+   ========================================================= */
 function renderResult(product) {
   const body = $('resultBody');
   body.innerHTML = '';
@@ -727,6 +791,7 @@ function renderResult(product) {
   }
 }
 
+/* ENTER для отправки */
 $('codeInput').addEventListener('keydown', function (e) {
   if (e.key === 'Enter') {
     e.preventDefault();
@@ -734,6 +799,9 @@ $('codeInput').addEventListener('keydown', function (e) {
   }
 });
 
+/* =========================================================
+   ИНИЦИАЛИЗАЦИЯ
+   ========================================================= */
 renderCatalog();
 </script>
 </body>
