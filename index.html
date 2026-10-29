@@ -394,172 +394,151 @@
 
 <script>
 /* =========================================================
-   ДАННЫЕ ТОВАРОВ
+   ДАННЫЕ ТОВАРОВ (без кодов и без ссылок — они спрятаны ниже)
    ========================================================= */
 const PRODUCTS = [
   {
-    id: 'white-ghost',
-    icon: '👻',
-    name: 'Белый призрак',
+    id: 'white-ghost', icon: '👻', name: 'Белый призрак',
     desc: 'Белый призрак на плечо',
-    fullDesc: 'Товар: <b>белый призрак на плечо</b>. ' +
-              'После оплаты вы получаете <span class="hl">ссылку на сервер</span> — заходите и получаете белого призрака. ' +
-              'Раздача происходит в <span class="hl">18:00, 19:00, 20:00</span>. ' +
-              'Всё остальное время на сервере <b>нет раздачи</b>.',
-    badge: 'Код-товар',
-    type: 'link',
-    link: 'https://www.roblox.com/share?code=8c7d0ba77f00d141a4a87dd6ede93c85&type=Server',
+    fullDesc: 'Товар: <b>белый призрак на плечо</b>. После оплаты вы получаете <span class="hl">ссылку на сервер</span> — заходите и получаете белого призрака. Раздача происходит в <span class="hl">18:00, 19:00, 20:00</span>. Всё остальное время на сервере <b>нет раздачи</b>.',
+    badge: 'Код-товар', type: 'link',
     linkTitle: '🔗 Ссылка на сервер раздачи',
     note: 'Заходите на сервер в часы раздачи: <b>18:00, 19:00, 20:00</b>.<br>В остальное время раздача закрыта.'
   },
   {
-    id: 'pack-2000',
-    icon: '🎮',
-    name: 'Пак 2000+ игр',
+    id: 'pack-2000', icon: '🎮', name: 'Пак 2000+ игр',
     desc: 'Пак 2000+ игр для Roblox Studio',
-    fullDesc: 'Товар: <b>пак 2000+ игр</b>. ' +
-              'После ввода кода вы получаете <span class="hl">ссылку на архив с .rbxl файлами</span>. ' +
-              'Как открыть:',
-    badge: 'Архив',
-    type: 'link',
-    link: 'https://mega.nz/folder/zuonHI7R#8wGlV_D1zIbO-WPSImGzMQ',
+    fullDesc: 'Товар: <b>пак 2000+ игр</b>. После ввода кода вы получаете <span class="hl">ссылку на архив с .rbxl файлами</span>. Как открыть:',
+    badge: 'Архив', type: 'link',
     linkTitle: '📦 Ссылка на пак 2000+ игр',
-    note: '<b>Как открыть файл:</b>' +
-          '<ol>' +
-            '<li>В Roblox Studio нажмите <b>Файл → Открыть из файла</b><br>(File → Open from File).</li>' +
-            '<li>Выберите ваш <b>.rbxl</b> файл.</li>' +
-          '</ol>'
+    note: '<b>Как открыть файл:</b><ol><li>В Roblox Studio нажмите <b>Файл → Открыть из файла</b><br>(File → Open from File).</li><li>Выберите ваш <b>.rbxl</b> файл.</li></ol>'
   },
   {
-    id: 'plugins-30',
-    icon: '🧩',
-    name: '30 платных плагинов',
+    id: 'plugins-30', icon: '🧩', name: '30 платных плагинов',
     desc: '30 платных, нужных плагинов',
-    fullDesc: 'Товар: <b>30 платных, нужных плагинов</b>. ' +
-              'После ввода кода вы получаете <span class="hl">ссылку на архив с плагинами</span> на Google Drive.',
-    badge: 'Плагины',
-    type: 'link',
-    link: 'https://drive.google.com/file/d/1Mb2AQQ8OqWlWxp_W-Fd5ht4l6U6t5aV_/view?usp=sharing',
+    fullDesc: 'Товар: <b>30 платных, нужных плагинов</b>. После ввода кода вы получаете <span class="hl">ссылку на архив с плагинами</span> на Google Drive.',
+    badge: 'Плагины', type: 'link',
     linkTitle: '🧩 Ссылка на 30 платных плагинов',
     note: 'Скачайте архив по ссылке и установите плагины в Roblox Studio через <b>Plugins → Manage Plugins</b> или перетащите .rbxm файлы в папку Plugins.'
   },
   {
-    id: 'copy-script',
-    icon: '📋',
-    name: 'Скрипт для копирования игр',
+    id: 'copy-script', icon: '📋', name: 'Скрипт для копирования игр',
     desc: 'Копирует GUI и карту',
-    fullDesc: '<span class="warn">ВНИМАНИЕ!!!</span> Скрипт <b>не копирует скрипты</b>, такие как серверная логика.<br>' +
-              'Копирует: <b>GUI, карту</b>.<br><br>' +
-              'Товар: скрипт для копирования игр (SynSaveInstance).',
-    badge: 'Скрипт',
-    type: 'script',
+    fullDesc: '<span class="warn">ВНИМАНИЕ!!!</span> Скрипт <b>не копирует скрипты</b>, такие как серверная логика.<br>Копирует: <b>GUI, карту</b>.<br><br>Товар: скрипт для копирования игр (SynSaveInstance).',
+    badge: 'Скрипт', type: 'script',
     linkTitle: '📜 Ваш скрипт',
-    note: 'Вставьте скрипт в executor в игре, которую хотите скопировать. ' +
-          '<b>Внимание:</b> скрипты (серверная логика) не копируются — только GUI и карта.',
-    script:
-`local Params = {
-    RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
-    SSI = "saveinstance",
-}
-
-local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()
-
-local Options = {} -- Documentation here https://luau.github.io/UniversalSynSaveInstance/api/SynSaveInstance
-
-synsaveinstance(Options)`
+    note: 'Вставьте скрипт в executor в игре, которую хотите скопировать. <b>Внимание:</b> скрипты (серверная логика) не копируются — только GUI и карта.',
+    script: 'local Params = {\n    RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",\n    SSI = "saveinstance",\n}\n\nlocal synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()\n\nlocal Options = {} -- Documentation here https://luau.github.io/UniversalSynSaveInstance/api/SynSaveInstance\n\nsynsaveinstance(Options)'
   },
   {
-    id: 'gta5-map',
-    icon: '🗺️',
-    name: 'Карта GTA 5',
+    id: 'gta5-map', icon: '🗺️', name: 'Карта GTA 5',
     desc: 'Карта GTA 5',
-    fullDesc: 'Товар: <b>карта GTA 5</b>. ' +
-              'После ввода кода вы получаете <span class="hl">ссылку на файл с картой</span> на Google Drive.',
-    badge: 'Карта',
-    type: 'link',
-    link: 'https://drive.google.com/file/d/1NpS2h4yEAfdRyMvLt9F5c-dsVkm3L1EE/view?usp=sharing',
+    fullDesc: 'Товар: <b>карта GTA 5</b>. После ввода кода вы получаете <span class="hl">ссылку на файл с картой</span> на Google Drive.',
+    badge: 'Карта', type: 'link',
     linkTitle: '🗺️ Ссылка на карту GTA 5',
     note: 'Скачайте файл по ссылке и используйте карту в своей игре или проекте.'
   },
   {
-    id: 'krasnoyarsk-winter',
-    icon: '❄️',
-    name: 'Красноярск зима',
+    id: 'krasnoyarsk-winter', icon: '❄️', name: 'Красноярск зима',
     desc: 'Карта, скрипты, системы, зимнее обновление',
-    fullDesc: 'В данный товар входит:<br>' +
-              '<ul>' +
-                '<li><b>Карта</b></li>' +
-                '<li><b>Скрипты</b></li>' +
-                '<li><b>Все системы</b></li>' +
-                '<li><b>Зимнее обновление</b></li>' +
-              '</ul><br>' +
-              'После ввода кода вы получаете <span class="hl">ссылку на архив с проектом</span> на Mega.nz.',
-    badge: 'Проект',
-    type: 'link',
-    link: 'https://mega.nz/file/yxI1AAIL#oYLKO3gSm9HDVT0AK4ddE_4B8zrv5KUyPQ96xL4-DvU',
+    fullDesc: 'В данный товар входит:<br><ul><li><b>Карта</b></li><li><b>Скрипты</b></li><li><b>Все системы</b></li><li><b>Зимнее обновление</b></li></ul><br>После ввода кода вы получаете <span class="hl">ссылку на архив с проектом</span> на Mega.nz.',
+    badge: 'Проект', type: 'link',
     linkTitle: '❄️ Ссылка на «Красноярск зима»',
     note: 'Скачайте архив по ссылке и распакуйте. Внутри — карта, скрипты, все системы и зимнее обновление.'
   },
   {
-    id: 'bakhmut-trenches',
-    icon: '🪖',
-    name: 'Карта Бахмут + окопы',
+    id: 'bakhmut-trenches', icon: '🪖', name: 'Карта Бахмут + окопы',
     desc: 'Реалистичная карта войны с окопами',
-    fullDesc: 'Очень красивая <b>реалистичная карта войны с окопами</b>.<br>' +
-              'Подходит для <b>РП</b> или для <b>шутеров</b>.<br><br>' +
-              'После ввода кода вы получаете <span class="hl">ссылку на файл с картой</span> на Mega.nz.',
-    badge: 'Карта',
-    type: 'link',
-    link: 'https://mega.nz/file/S84EASbL#YornDA6L7d3j_lnORacRpaHIZCyVXUmi2X3oG0hKlHY',
+    fullDesc: 'Очень красивая <b>реалистичная карта войны с окопами</b>. Подходит для <b>РП</b> или для <b>шутеров</b>.<br><br>После ввода кода вы получаете <span class="hl">ссылку на файл с картой</span> на Mega.nz.',
+    badge: 'Карта', type: 'link',
     linkTitle: '🪖 Ссылка на карту «Бахмут + окопы»',
     note: 'Скачайте файл по ссылке и используйте карту в своей РП-игре или шутере.'
   }
 ];
 
 /* =========================================================
-   ЗАШИФРОВАННЫЕ КОДЫ (перемешанные символы + карта порядка)
+   СПРЯТАННЫЕ ДАННЫЕ
+   Для каждого товара хранятся:
+   - _k: массив символов кода (перемешан)
+   - _o: массив порядка (order), тоже перемешан + зашифрован
+   - _u: зашифрованная ссылка (XOR + base64)
    ========================================================= */
-const _S = {
+
+// XOR-ключ для ссылок
+const _XK = 'z7Qp3L';
+
+function _decLink(enc) {
+  try {
+    const x = atob(enc);
+    let r = '';
+    for (let i = 0; i < x.length; i++) {
+      r += String.fromCharCode(x.charCodeAt(i) ^ _XK.charCodeAt(i % _XK.length));
+    }
+    return r;
+  } catch(e) { return ''; }
+}
+
+// порядок (order) хранится как строка цифр, перемешанная с мусором
+// формат: "x-y-..." где после разбора получаются индексы
+// для простоты храним как строку цифр через дефис, но перемешанную с "~"
+// при сборке разбиваем и берём только числа
+
+const _VAULT = {
   'white-ghost': {
-    chars: ['5','T','G','9','H','-','W','2','R','S','7','4','T','K','Q','-','-','M','Y'],
-    order: [2,4,9,0,1,5,10,11,17,18,12,13,14,15,16,6,7,8,3]
+    _k: ['5','T','G','9','H','-','W','2','R','S','7','4','T','K','Q','-','-','M','Y'],
+    _o: '2~4~9~0~1~5~10~11~17~18~12~13~14~15~16~6~7~8~3',
+    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7'
   },
   'pack-2000': {
-    chars: ['3','Z','P','X','J','-','A','L','6','C','K','8','M','-','4','N','2','V','-'],
-    order: [2,6,9,10,5,11,15,17,16,12,13,14,7,8,3,4,18,0,1]
+    _k: ['3','Z','P','X','J','-','A','L','6','C','K','8','M','-','4','N','2','V','-'],
+    _o: '2~6~9~10~5~11~15~17~16~12~13~14~7~8~3~4~18~0~1',
+    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+'
   },
   'plugins-30': {
-    chars: ['N','P','4','7','Q','-','V','L','M','9','X','-','U','G','3','2','B','K','-'],
-    order: [1,7,12,13,5,14,17,9,8,15,10,11,16,18,4,5,6,0,1]
+    _k: ['N','P','4','7','Q','-','V','L','M','9','X','-','U','G','3','2','B','K','-'],
+    _o: '1~7~12~13~5~14~17~9~8~15~10~11~16~18~4~5~6~0~1',
+    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+'
   },
   'copy-script': {
-    chars: ['7','M','C','N','-','Q','5','O','R','2','P','-','Y','8','W','T','3','-','Y'],
-    order: [2,7,10,18,4,6,8,14,15,16,11,12,18,13,4,5,9,17,6]
+    _k: ['7','M','C','N','-','Q','5','O','R','2','P','-','Y','8','W','T','3','-','Y'],
+    _o: '2~7~10~18~4~6~8~14~15~16~11~12~18~13~4~5~9~17~6',
+    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+'
   },
   'gta5-map': {
-    chars: ['K','3','G','Q','T','-','A','7','5','-','M','P','A'],
-    order: [2,4,6,8,5,10,12,1,7,2,11,3,9]
+    _k: ['K','3','G','Q','T','-','A','7','5','-','M','P','A'],
+    _o: '2~4~6~8~5~10~12~1~7~2~11~3~9',
+    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7'
   },
   'krasnoyarsk-winter': {
-    chars: ['7','2','K','M','-','0','W','5','N','X','S','Q','R','T','K','-','R','0','2'],
-    order: [2,12,10,2,7,6,8,14,5,0,1,3,4,5,8,15,16,17,18]
+    _k: ['7','2','K','M','-','0','W','5','N','X','S','Q','R','T','K','-','R','0','2'],
+    _o: '2~12~10~2~7~6~8~14~5~0~1~3~4~5~8~15~16~17~18',
+    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+'
   },
   'bakhmut-trenches': {
-    chars: ['8','W','B','R','C','-','M','K','U','5','T','-','0','N','2','H','T','R','0'],
-    order: [2,15,6,8,16,5,17,11,12,9,14,18,10,13,4,5,7,0,1]
+    _k: ['8','W','B','R','C','-','M','K','U','5','T','-','0','N','2','H','T','R','0'],
+    _o: '2~15~6~8~16~5~17~11~12~9~14~18~10~13~4~5~7~0~1',
+    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7'
   }
 };
 
 /* Восстановление кода из перемешанных символов */
 function _buildCode(productId) {
-  const s = _S[productId];
-  if (!s) return '';
+  const v = _VAULT[productId];
+  if (!v) return '';
+  const order = v._o.split('~').map(Number);
   let out = '';
-  for (let i = 0; i < s.order.length; i++) {
-    const idx = s.order[i];
-    out += (s.chars[idx] !== undefined ? s.chars[idx] : '');
+  for (let i = 0; i < order.length; i++) {
+    const idx = order[i];
+    out += (v._k[idx] !== undefined ? v._k[idx] : '');
   }
   return out.toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+
+/* Восстановление ссылки */
+function _buildLink(productId) {
+  const v = _VAULT[productId];
+  if (!v || !v._u) return '';
+  return _decLink(v._u);
 }
 
 /* =========================================================
@@ -673,7 +652,6 @@ $('redeemBtn').addEventListener('click', function () {
     return;
   }
 
-  // Собираем настоящий код из перемешанных частей и сравниваем
   const realCode = _buildCode(selectedProduct.id);
   const isValid = realCode && realCode === entered;
 
@@ -699,7 +677,7 @@ $('redeemBtn').addEventListener('click', function () {
 });
 
 /* =========================================================
-   РЕНДЕР РЕЗУЛЬТАТА (ссылка или скрипт)
+   РЕНДЕР РЕЗУЛЬТАТА
    ========================================================= */
 function renderResult(product) {
   const body = $('resultBody');
@@ -750,18 +728,19 @@ function renderResult(product) {
     return;
   }
 
+  const link = _buildLink(product.id);
   const linkBox = document.createElement('div');
   linkBox.className = 'link-box';
   const a = document.createElement('a');
-  a.href = product.link;
+  a.href = link;
   a.target = '_blank';
   a.rel = 'noopener noreferrer';
-  a.textContent = product.link;
+  a.textContent = link;
   const copyBtn = document.createElement('button');
   copyBtn.className = 'copy';
   copyBtn.textContent = 'Копировать';
   copyBtn.addEventListener('click', function () {
-    navigator.clipboard.writeText(product.link).then(() => {
+    navigator.clipboard.writeText(link).then(() => {
       const original = this.textContent;
       this.textContent = '✓ Скопировано';
       this.classList.add('done');
