@@ -30,6 +30,50 @@
     padding:20px 18px 60px;
   }
 
+  /* Стили для экрана тех. перерыва */
+  .maintenance-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg);
+    background: radial-gradient(circle at center, rgba(20, 35, 65, 0.4) 0%, var(--bg) 70%);
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    backdrop-filter: blur(8px);
+  }
+  .m-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 40px 30px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  }
+  .m-icon { font-size: 3.5rem; margin-bottom: 15px; animation: pulse 2s infinite ease-in-out; }
+  .m-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; color: #fff; }
+  .m-text { font-size: 0.95rem; color: var(--muted); margin-bottom: 25px; line-height: 1.5; }
+  .m-timer {
+    display: flex; justify-content: center; gap: 12px;
+  }
+  .t-item {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    min-width: 75px; padding: 12px 5px;
+  }
+  .t-num { font-size: 1.8rem; font-weight: 700; color: var(--accent); font-family: monospace; }
+  .t-lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; margin-top: 2px; letter-spacing: 0.5px; }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 15px rgba(126,166,255,0.4)); }
+  }
+
   .header {
     max-width:1180px;
     margin:0 auto 22px;
@@ -186,8 +230,6 @@
   .desc-box b { color:#fff; }
   .desc-box .hl { color:var(--accent2); font-weight:600; }
   .desc-box .warn { color:#ff8fa3; font-weight:700; }
-  .desc-box ul { margin:8px 0 0 18px; padding:0; }
-  .desc-box ul li { margin-bottom:4px; }
   .desc-box ol { margin:8px 0 0 18px; padding:0; }
   .desc-box ol li { margin-bottom:4px; }
 
@@ -297,491 +339,440 @@
     font-size:.66rem;
     font-weight:600;
     cursor:pointer;
-    font-family:inherit;
-    white-space:nowrap;
-    transition:.15s;
-    flex-shrink:0;
-  }
-  .copy:hover { background:#2a3b52; }
-  .copy.done { background:rgba(61,220,151,.2); border-color:rgba(61,220,151,.5); color:#a8f5cf; }
-  .server-note {
-    font-size:.7rem;
-    color:#7b8aa2;
-    line-height:1.5;
-  }
-  .server-note b { color:#c8d8f0; }
-  .server-note ol { margin:6px 0 0 16px; padding:0; }
-  .server-note ol li { margin-bottom:3px; }
+font-family:inherit;
+white-space:nowrap;
+transition:.15s;
+flex-shrink:0;
+}
+.copy:hover { background:#2a3b52; }
+.copy.done { background:rgba(61,220,151,.2); border-color:rgba(61,220,151,.5); color:#a8f5cf; }
+.server-note {
+font-size:.7rem;
+color:#7b8aa2;
+line-height:1.5;
+}
+.server-note b { color:#c8d8f0; }
+.server-note ol { margin:6px 0 0 16px; padding:0; }
+.server-note ol li { margin-bottom:3px; }
+.script-box {
+background:#0a0f18;
+border:1px solid #24384c;
+border-radius:10px;
+padding:12px;
+margin-bottom:8px;
+}
+.script-code {
+font-family: ui-monospace, Consolas, monospace;
+font-size:.7rem;
+color:#a8e0ff;
+white-space:pre-wrap;
+word-break:break-word;
+line-height:1.5;
+max-height:260px;
+overflow:auto;
+}
+.script-code::-webkit-scrollbar { width:6px; }
+.script-code::-webkit-scrollbar-thumb { background:#354c68; border-radius:3px; }
+.footer {
+max-width:1180px;
+margin:28px auto 0;
+text-align:center;
+font-size:.72rem;
+color:#59647a;
+line-height:1.6;
+}
 
-  .script-box {
-    background:#0a0f18;
-    border:1px solid #24384c;
-    border-radius:10px;
-    padding:12px;
-    margin-bottom:8px;
-  }
-  .script-code {
-    font-family: ui-monospace, Consolas, monospace;
-    font-size:.7rem;
-    color:#a8e0ff;
-    white-space:pre-wrap;
-    word-break:break-word;
-    line-height:1.5;
-    max-height:260px;
-    overflow:auto;
-  }
-  .script-code::-webkit-scrollbar { width:6px; }
-  .script-code::-webkit-scrollbar-thumb { background:#354c68; border-radius:3px; }
 
-  .footer {
-    max-width:1180px;
-    margin:28px auto 0;
-    text-align:center;
-    font-size:.72rem;
-    color:#59647a;
-    line-height:1.6;
-  }
-</style>
-</head>
-<body>
+🛠️
+Технический перерыв
+Мы обновляем системы для улучшения стабильности. Сайт возобновит свою работу автоматически через:
 
-<header class="header">
-  <div class="logo"><span class="g">👻</span> SwagaLorryShop</div>
-</header>
+00Часов
+00Минут
+00Секунд
 
-<div class="layout">
-  <section class="catalog">
-    <div class="catalog-head">
-      <h2>Товары</h2>
-      <span class="count" id="productCount">0 товаров</span>
-    </div>
-    <div class="products" id="productGrid"></div>
-  </section>
 
-  <aside class="sidebar" id="sidebar">
-    <div class="side-head">Покупка</div>
-    <div class="empty-state" id="emptyState">
-      <span class="icon">🛒</span>
-      Выберите товар слева,<br>чтобы получить его по коду.
-    </div>
-    <div id="purchasePanel" style="display:none;">
-      <div class="selected-product">
-        <div class="s-icon" id="selIcon">👻</div>
-        <div>
-          <div class="s-name" id="selName">—</div>
-          <div class="s-sub" id="selSub">—</div>
-        </div>
-      </div>
-      <div class="desc-title">Описание</div>
-      <div class="desc-box" id="descBox">—</div>
-      <div class="field-label">Введите ваш код</div>
-      <input type="text" class="code-input" id="codeInput"
-             placeholder="XXXX-XXXX-XXXX-XXXX" maxlength="19"
-             autocomplete="off" spellcheck="false">
-      <button class="btn" id="redeemBtn">Получить</button>
-      <div class="msg" id="msg"></div>
-      <div class="result" id="result">
-        <div class="result-title">🔗 Ссылка на сервер раздачи</div>
-        <div id="resultBody"></div>
-      </div>
-    </div>
-  </aside>
-</div>
+👻 SwagaLorryShop
+Товары
+0 товаров
 
-<div class="footer">
-  SwagaLorryShop · выдача товаров по кодам · раздача по расписанию
-</div>
 
-<script>
-/* =========================================================
-   ДАННЫЕ ТОВАРОВ (без кодов и без ссылок — они спрятаны ниже)
-   ========================================================= */
+Покупка
+
+🛒
+Выберите товар слева,
+чтобы получить его по коду.
+
+
+
+👻
+
+—
+—
+
+
+Описание
+—
+Введите ваш код
+
+Получить
+
+
+🔗 Ссылка на сервер раздачи
+
+
+
+
+SwagaLorryShop · выдача товаров по кодам · раздача по расписанию
 const PRODUCTS = [
-  {
-    id: 'white-ghost', icon: '👻', name: 'Белый призрак',
-    desc: 'Белый призрак на плечо',
-    fullDesc: 'Товар: <b>белый призрак на плечо</b>. После оплаты вы получаете <span class="hl">ссылку на сервер</span> — заходите и получаете белого призрака. Раздача происходит в <span class="hl">18:00, 19:00, 20:00</span>. Всё остальное время на сервере <b>нет раздачи</b>.',
-    badge: 'Код-товар', type: 'link',
-    linkTitle: '🔗 Ссылка на сервер раздачи',
-    note: 'Заходите на сервер в часы раздачи: <b>18:00, 19:00, 20:00</b>.<br>В остальное время раздача закрыта.'
-  },
-  {
-    id: 'pack-2000', icon: '🎮', name: 'Пак 2000+ игр',
-    desc: 'Пак 2000+ игр для Roblox Studio',
-    fullDesc: 'Товар: <b>пак 2000+ игр</b>. После ввода кода вы получаете <span class="hl">ссылку на архив с .rbxl файлами</span>. Как открыть:',
-    badge: 'Архив', type: 'link',
-    linkTitle: '📦 Ссылка на пак 2000+ игр',
-    note: '<b>Как открыть файл:</b><ol><li>В Roblox Studio нажмите <b>Файл → Открыть из файла</b><br>(File → Open from File).</li><li>Выберите ваш <b>.rbxl</b> файл.</li></ol>'
-  },
-  {
-    id: 'plugins-30', icon: '🧩', name: '30 платных плагинов',
-    desc: '30 платных, нужных плагинов',
-    fullDesc: 'Товар: <b>30 платных, нужных плагинов</b>. После ввода кода вы получаете <span class="hl">ссылку на архив с плагинами</span> на Google Drive.',
-    badge: 'Плагины', type: 'link',
-    linkTitle: '🧩 Ссылка на 30 платных плагинов',
-    note: 'Скачайте архив по ссылке и установите плагины в Roblox Studio через <b>Plugins → Manage Plugins</b> или перетащите .rbxm файлы в папку Plugins.'
-  },
-  {
-    id: 'copy-script', icon: '📋', name: 'Скрипт для копирования игр',
-    desc: 'Копирует GUI и карту',
-    fullDesc: '<span class="warn">ВНИМАНИЕ!!!</span> Скрипт <b>не копирует скрипты</b>, такие как серверная логика.<br>Копирует: <b>GUI, карту</b>.<br><br>Товар: скрипт для копирования игр (SynSaveInstance).',
-    badge: 'Скрипт', type: 'script',
-    linkTitle: '📜 Ваш скрипт',
-    note: 'Вставьте скрипт в executor в игре, которую хотите скопировать. <b>Внимание:</b> скрипты (серверная логика) не копируются — только GUI и карта.',
-    script: 'local Params = {\n    RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",\n    SSI = "saveinstance",\n}\n\nlocal synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()\n\nlocal Options = {} -- Documentation here https://luau.github.io/UniversalSynSaveInstance/api/SynSaveInstance\n\nsynsaveinstance(Options)'
-  },
-  {
-    id: 'gta5-map', icon: '🗺️', name: 'Карта GTA 5',
-    desc: 'Карта GTA 5',
-    fullDesc: 'Товар: <b>карта GTA 5</b>. После ввода кода вы получаете <span class="hl">ссылку на файл с картой</span> на Google Drive.',
-    badge: 'Карта', type: 'link',
-    linkTitle: '🗺️ Ссылка на карту GTA 5',
-    note: 'Скачайте файл по ссылке и используйте карту в своей игре или проекте.'
-  },
-  {
-    id: 'krasnoyarsk-winter', icon: '❄️', name: 'Красноярск зима',
-    desc: 'Карта, скрипты, системы, зимнее обновление',
-    fullDesc: 'В данный товар входит:<br><ul><li><b>Карта</b></li><li><b>Скрипты</b></li><li><b>Все системы</b></li><li><b>Зимнее обновление</b></li></ul><br>После ввода кода вы получаете <span class="hl">ссылку на архив с проектом</span> на Mega.nz.',
-    badge: 'Проект', type: 'link',
-    linkTitle: '❄️ Ссылка на «Красноярск зима»',
-    note: 'Скачайте архив по ссылке и распакуйте. Внутри — карта, скрипты, все системы и зимнее обновление.'
-  },
-  {
-    id: 'bakhmut-trenches', icon: '🪖', name: 'Карта Бахмут + окопы',
-    desc: 'Реалистичная карта войны с окопами',
-    fullDesc: 'Очень красивая <b>реалистичная карта войны с окопами</b>. Подходит для <b>РП</b> или для <b>шутеров</b>.<br><br>После ввода кода вы получаете <span class="hl">ссылку на файл с картой</span> на Mega.nz.',
-    badge: 'Карта', type: 'link',
-    linkTitle: '🪖 Ссылка на карту «Бахмут + окопы»',
-    note: 'Скачайте файл по ссылке и используйте карту в своей РП-игре или шутере.'
-  }
+{
+id: 'white-ghost',
+icon: '👻',
+name: 'Белый призрак',
+desc: 'Белый призрак на плечо',
+fullDesc: 'Товар: белый призрак на плечо. ' +
+'После оплаты вы получаете ссылку на сервер — заходите и получаете белого призрака. ' +
+'Раздача происходит в 18:00, 19:00, 20:00. ' +
+'Всё остальное время на сервере нет раздачи.',
+badge: 'Код-товар',
+type: 'link',
+link: 'roblox.com',
+linkTitle: '🔗 Ссылка на сервер раздачи',
+note: 'Заходите на сервер в часы раздачи: 18:00, 19:00, 20:00.
+В остальное время раздача закрыта.',
+codes: ['GHST-7K2M-9QW4-RT5Y']
+},
+{
+id: 'pack-2000',
+icon: '🎮',
+name: 'Пак 2000+ игр',
+desc: 'Пак 2000+ игр для Roblox Studio',
+fullDesc: 'Товар: пак 2000+ игр. ' +
+'После ввода кода вы получаете ссылку на архив с .rbxl файлами. ' +
+'Как открыть:',
+badge: 'Архив',
+type: 'link',
+link: 'mega.nz',
+linkTitle: '📦 Ссылка на пак 2000+ игр',
+note: 'Как открыть файл:' +
+'' +
+'В Roblox Studio нажмите Файл → Открыть из файла
+(File → Open from File).' +
+'Выберите ваш .rbxl файл.' +
+'',
+codes: ['PACK-8N4V-2XJ6-LM3Z']
+},
+{
+id: 'plugins-30',
+icon: '🧩',
+name: '30 платных плагинов',
+desc: '30 платных, нужных плагинов',
+fullDesc: 'Товар: 30 платных, нужных плагинов. ' +
+'После ввода кода вы получаете ссылку на архив с плагинами на Google Drive.',
+badge: 'Плагины',
+type: 'link',
+link: 'google.com',
+linkTitle: '🧩 Ссылка на 30 платных плагинов',
+note: 'Скачайте архив по ссылке и установите плагины в Roblox Studio через Plugins → Manage Plugins или перетащите .rbxm файлы в папку Plugins.',
+codes: ['PLUG-3K9M-7QX2-VN4B']
+},
+{
+id: 'copy-script',
+icon: '📋',
+name: 'Скрипт для копирования игр',
+desc: 'Копирует GUI и карту',
+fullDesc: 'ВНИМАНИЕ!!! Скрипт не копирует скрипты, такие как серверная логика.
+' +
+'Копирует: GUI, карту.
+
+' +
+'Товар: скрипт для копирования игр (SynSaveInstance).',
+badge: 'Скрипт',
+type: 'script',
+linkTitle: '📜 Ваш скрипт',
+note: 'Вставьте скрипт в executor в игре, которую хотите скопировать. ' +
+'Внимание: скрипты (серверная логика) не копируются — только GUI и карта.',
+script:
+`local Params = {
+RepoURL = "githubusercontent.com",
+SSI = "saveinstance",
+}
+local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()
+local Options = {} -- Documentation here github.io
+synsaveinstance(Options)`,
+codes: ['COPY-5R8T-3WY7-NQ2M']
+},
+{
+id: 'gta5-map',
+icon: '🗺️',
+name: 'Карта GTA 5',
+desc: 'Карта GTA 5',
+fullDesc: 'Товар: карта GTA 5. ' +
+'После ввода кода вы получаете ссылку на файл с картой на Google Drive.',
+badge: 'Карта',
+type: 'link',
+link: 'google.com',
+linkTitle: '🗺️ Ссылка на карту GTA 5',
+note: 'Скачайте файл по ссылке и используйте карту в своей игре или проекте.',
+codes: ['GTA5-MAP-7K3Q']
+},
+{
+id: 'krasnoyarsk-winter',
+icon: '❄️',
+name: 'Красноярск зима',
+desc: 'Карта, скрипты, системы, зимнее обновление',
+fullDesc: 'В данный товар входит:
+' +
+'' +
+'Карта' +
+'Скрипты' +
+'Все системы' +
+'Зимнее обновление' +
+'
+' +
+'После ввода кода вы получаете ссылку на архив с проектом на Mega.nz.',
+badge: 'Проект',
+type: 'link',
+link: 'mega.nz',
+linkTitle: '❄️ Ссылка на «Красноярск зима»',
+note: 'Скачайте архив по ссылке и распакуйте. Внутри — карта, скрипты, все системы и зимнее обновление.',
+codes: ['KRSK-WNTR-2025-XQ7M']
+},
+{
+id: 'bakhmut-trenches',
+icon: '🪖',
+name: 'Карта Бахмут + окопы',
+desc: 'Реалистичная карта войны с окопами',
+fullDesc: 'Очень красивая реалистичная карта войны с окопами.
+' +
+'Подходит для РП или для шутеров.
+
+' +
+'После ввода кода вы получаете ссылку на файл с картой на Mega.nz.',
+badge: 'Карта',
+type: 'link',
+link: 'mega.nz',
+linkTitle: '🪖 Ссылка на карту «Бахмут + окопы»',
+note: 'Скачайте файл по ссылке и используйте карту в своей РП-игре или шутере.',
+codes: ['BHMUT-TRNC-2025-WR8K']
+}
 ];
-
-/* =========================================================
-   СПРЯТАННЫЕ ДАННЫЕ
-   Для каждого товара хранятся:
-   - _k: массив символов кода (перемешан)
-   - _o: массив порядка (order), тоже перемешан + зашифрован
-   - _u: зашифрованная ссылка (XOR + base64)
-   ========================================================= */
-
-// XOR-ключ для ссылок
-const _XK = 'z7Qp3L';
-
-function _decLink(enc) {
-  try {
-    const x = atob(enc);
-    let r = '';
-    for (let i = 0; i < x.length; i++) {
-      r += String.fromCharCode(x.charCodeAt(i) ^ _XK.charCodeAt(i % _XK.length));
-    }
-    return r;
-  } catch(e) { return ''; }
-}
-
-// порядок (order) хранится как строка цифр, перемешанная с мусором
-// формат: "x-y-..." где после разбора получаются индексы
-// для простоты храним как строку цифр через дефис, но перемешанную с "~"
-// при сборке разбиваем и берём только числа
-
-const _VAULT = {
-  'white-ghost': {
-    _k: ['5','T','G','9','H','-','W','2','R','S','7','4','T','K','Q','-','-','M','Y'],
-    _o: '2~4~9~0~1~5~10~11~17~18~12~13~14~15~16~6~7~8~3',
-    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7'
-  },
-  'pack-2000': {
-    _k: ['3','Z','P','X','J','-','A','L','6','C','K','8','M','-','4','N','2','V','-'],
-    _o: '2~6~9~10~5~11~15~17~16~12~13~14~7~8~3~4~18~0~1',
-    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+'
-  },
-  'plugins-30': {
-    _k: ['N','P','4','7','Q','-','V','L','M','9','X','-','U','G','3','2','B','K','-'],
-    _o: '1~7~12~13~5~14~17~9~8~15~10~11~16~18~4~5~6~0~1',
-    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+'
-  },
-  'copy-script': {
-    _k: ['7','M','C','N','-','Q','5','O','R','2','P','-','Y','8','W','T','3','-','Y'],
-    _o: '2~7~10~18~4~6~8~14~15~16~11~12~18~13~4~5~9~17~6',
-    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+'
-  },
-  'gta5-map': {
-    _k: ['K','3','G','Q','T','-','A','7','5','-','M','P','A'],
-    _o: '2~4~6~8~5~10~12~1~7~2~11~3~9',
-    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7'
-  },
-  'krasnoyarsk-winter': {
-    _k: ['7','2','K','M','-','0','W','5','N','X','S','Q','R','T','K','-','R','0','2'],
-    _o: '2~12~10~2~7~6~8~14~5~0~1~3~4~5~8~15~16~17~18',
-    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+'
-  },
-  'bakhmut-trenches': {
-    _k: ['8','W','B','R','C','-','M','K','U','5','T','-','0','N','2','H','T','R','0'],
-    _o: '2~15~6~8~16~5~17~11~12~9~14~18~10~13~4~5~7~0~1',
-    _u: 'fW5kI3wqZ3B0bH1vc39zZmZ0dW59fXd5e3RzdmZ6dXZ3eHl6fX1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7fH1+f4B7'
-  }
-};
-
-/* Восстановление кода из перемешанных символов */
-function _buildCode(productId) {
-  const v = _VAULT[productId];
-  if (!v) return '';
-  const order = v._o.split('~').map(Number);
-  let out = '';
-  for (let i = 0; i < order.length; i++) {
-    const idx = order[i];
-    out += (v._k[idx] !== undefined ? v._k[idx] : '');
-  }
-  return out.toUpperCase().replace(/[^A-Z0-9]/g, '');
-}
-
-/* Восстановление ссылки */
-function _buildLink(productId) {
-  const v = _VAULT[productId];
-  if (!v || !v._u) return '';
-  return _decLink(v._u);
-}
-
-/* =========================================================
-   СОСТОЯНИЕ И ХЕЛПЕРЫ
-   ========================================================= */
 let selectedProduct = null;
-
 function normalize(s) {
-  return String(s).toUpperCase().replace(/[^A-Z0-9]/g, '');
+return String(s).toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
 function $(id) { return document.getElementById(id); }
-
-function plural(n, one, few, many) {
-  const mod10 = n % 10, mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return one;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
-  return many;
-}
-
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, m => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[m]));
-}
-
-/* =========================================================
-   РЕНДЕР КАТАЛОГА
-   ========================================================= */
 function renderCatalog() {
-  const grid = $('productGrid');
-  grid.innerHTML = '';
-  $('productCount').textContent = PRODUCTS.length + ' ' + plural(PRODUCTS.length, 'товар', 'товара', 'товаров');
-
-  PRODUCTS.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    card.dataset.id = p.id;
-    card.innerHTML = `
-      <div class="p-icon">${p.icon}</div>
-      <div class="p-name">${escapeHtml(p.name)}</div>
-      <div class="p-desc">${escapeHtml(p.desc)}</div>
-      ${p.badge ? `<div class="p-badge">${escapeHtml(p.badge)}</div>` : ''}
-    `;
-    card.addEventListener('click', () => selectProduct(p.id));
-    grid.appendChild(card);
-  });
+const grid = $('productGrid');
+grid.innerHTML = '';
+$('productCount').textContent = PRODUCTS.length + ' ' + plural(PRODUCTS.length, 'товар', 'товара', 'товаров');
+PRODUCTS.forEach(p => {
+const card = document.createElement('div');
+card.className = 'product-card';
+card.dataset.id = p.id;
+card.innerHTML = <div class="p-icon">${p.icon}</div> <div class="p-name">${escapeHtml(p.name)}</div> <div class="p-desc">${escapeHtml(p.desc)}</div> ${p.badge ?${escapeHtml(p.badge)}: ''};
+card.addEventListener('click', () => selectProduct(p.id));
+grid.appendChild(card);
+});
 }
-
-/* =========================================================
-   ВЫБОР ТОВАРА
-   ========================================================= */
+function plural(n, one, few, many) {
+const mod10 = n % 10, mod100 = n % 100;
+if (mod10 === 1 && mod100 !== 11) return one;
+if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+return many;
+}
+function escapeHtml(str) {
+return String(str).replace(/[&<>"']/g, m => ({
+'&':'&','<':'<','>':'>','"':'"',"'":'''
+}[m]));
+}
 function selectProduct(id) {
-  const product = PRODUCTS.find(p => p.id === id);
-  if (!product) return;
-  selectedProduct = product;
-
-  document.querySelectorAll('.product-card').forEach(c => {
-    c.classList.toggle('active', c.dataset.id === id);
-  });
-
-  $('emptyState').style.display = 'none';
-  $('purchasePanel').style.display = 'block';
-
-  $('selIcon').textContent = product.icon;
-  $('selName').textContent = product.name;
-  $('selSub').textContent = product.desc;
-  $('descBox').innerHTML = product.fullDesc || product.desc || '—';
-
-  resetPurchaseUI();
+const product = PRODUCTS.find(p => p.id === id);
+if (!product) return;
+selectedProduct = product;
+document.querySelectorAll('.product-card').forEach(c => {
+c.classList.toggle('active', c.dataset.id === id);
+});
+$('emptyState').style.display = 'none';
+$('purchasePanel').style.display = 'block';
+$('selIcon').textContent = product.icon;
+$('selName').textContent = product.name;
+$('selSub').textContent = product.desc;
+$('descBox').innerHTML = product.fullDesc || product.desc || '—';
+resetPurchaseUI();
 }
-
 function resetPurchaseUI() {
-  const input = $('codeInput');
-  input.value = '';
-  input.disabled = false;
-  $('redeemBtn').disabled = false;
-  $('msg').className = 'msg';
-  $('msg').textContent = '';
-  $('result').classList.remove('show');
-  $('resultBody').innerHTML = '';
-  $('result').querySelector('.result-title').textContent = '🔗 Ссылка';
+const input = $('codeInput');
+input.value = '';
+input.disabled = false;
+$('redeemBtn').disabled = false;
+$('msg').className = 'msg';
+$('msg').textContent = '';
+$('result').classList.remove('show');
+$('resultBody').innerHTML = '';
+$('result').querySelector('.result-title').textContent = '🔗 Ссылка';
 }
-
-/* =========================================================
-   АВТО-ФОРМАТИРОВАНИЕ ВВОДА КОДА
-   ========================================================= */
 $('codeInput').addEventListener('input', function () {
-  let raw = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 16);
-  const parts = [];
-  for (let i = 0; i < raw.length; i += 4) parts.push(raw.substring(i, i + 4));
-  this.value = parts.join('-');
+let raw = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 16);
+const parts = [];
+for (let i = 0; i < raw.length; i += 4) parts.push(raw.substring(i, i + 4));
+this.value = parts.join('-');
 });
-
-/* =========================================================
-   ПОЛУЧЕНИЕ (ПРОВЕРКА КОДА)
-   ========================================================= */
 $('redeemBtn').addEventListener('click', function () {
-  if (!selectedProduct) return;
-
-  const entered = normalize($('codeInput').value);
-  const msg = $('msg');
-
-  if (!entered) {
-    msg.textContent = 'Введите код.';
-    msg.className = 'msg show err';
-    return;
-  }
-  if (entered.length < 8) {
-    msg.textContent = 'Код слишком короткий. Проверьте ввод.';
-    msg.className = 'msg show err';
-    return;
-  }
-
-  const realCode = _buildCode(selectedProduct.id);
-  const isValid = realCode && realCode === entered;
-
-  if (isValid) {
-    msg.textContent = '✅ Код принят! Товар выдан ниже.';
-    msg.className = 'msg show ok';
-
-    $('result').querySelector('.result-title').textContent =
-      selectedProduct.linkTitle || '🔗 Ссылка';
-
-    renderResult(selectedProduct);
-    $('result').classList.add('show');
-
-    $('codeInput').disabled = true;
-    this.disabled = true;
-
-    setTimeout(() => $('result').scrollIntoView({ behavior:'smooth', block:'nearest' }), 60);
-  } else {
-    msg.textContent = '❌ Неверный код. Проверьте правильность и попробуйте снова.';
-    msg.className = 'msg show err';
-    $('result').classList.remove('show');
-  }
-});
-
-/* =========================================================
-   РЕНДЕР РЕЗУЛЬТАТА
-   ========================================================= */
-function renderResult(product) {
-  const body = $('resultBody');
-  body.innerHTML = '';
-
-  if (product.type === 'script') {
-    const wrap = document.createElement('div');
-    wrap.className = 'script-box';
-    const pre = document.createElement('div');
-    pre.className = 'script-code';
-    pre.textContent = product.script;
-    wrap.appendChild(pre);
-    body.appendChild(wrap);
-
-    const btnRow = document.createElement('div');
-    btnRow.className = 'link-box';
-    const spacer = document.createElement('div');
-    spacer.style.flex = '1';
-    spacer.style.fontSize = '.7rem';
-    spacer.style.color = '#7b8aa2';
-    spacer.textContent = 'Скрипт для копирования игр';
-    const copyBtn = document.createElement('button');
-    copyBtn.className = 'copy';
-    copyBtn.textContent = 'Копировать';
-    copyBtn.addEventListener('click', function () {
-      navigator.clipboard.writeText(product.script).then(() => {
-        const original = this.textContent;
-        this.textContent = '✓ Скопировано';
-        this.classList.add('done');
-        setTimeout(() => {
-          this.textContent = original;
-          this.classList.remove('done');
-        }, 1200);
-      }).catch(() => {
-        alert('Не удалось скопировать. Выделите текст скрипта вручную.');
-      });
-    });
-    btnRow.appendChild(spacer);
-    btnRow.appendChild(copyBtn);
-    body.appendChild(btnRow);
-
-    if (product.note) {
-      const note = document.createElement('div');
-      note.className = 'server-note';
-      note.innerHTML = product.note;
-      body.appendChild(note);
-    }
-    return;
-  }
-
-  const link = _buildLink(product.id);
-  const linkBox = document.createElement('div');
-  linkBox.className = 'link-box';
-  const a = document.createElement('a');
-  a.href = link;
-  a.target = '_blank';
-  a.rel = 'noopener noreferrer';
-  a.textContent = link;
-  const copyBtn = document.createElement('button');
-  copyBtn.className = 'copy';
-  copyBtn.textContent = 'Копировать';
-  copyBtn.addEventListener('click', function () {
-    navigator.clipboard.writeText(link).then(() => {
-      const original = this.textContent;
-      this.textContent = '✓ Скопировано';
-      this.classList.add('done');
-      setTimeout(() => {
-        this.textContent = original;
-        this.classList.remove('done');
-      }, 1200);
-    }).catch(() => {
-      const range = document.createRange();
-      range.selectNodeContents(a);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-      this.textContent = 'Ctrl+C';
-      setTimeout(() => { this.textContent = 'Копировать'; }, 1500);
-    });
-  });
-  linkBox.appendChild(a);
-  linkBox.appendChild(copyBtn);
-  body.appendChild(linkBox);
-
-  if (product.note) {
-    const note = document.createElement('div');
-    note.className = 'server-note';
-    note.innerHTML = product.note;
-    body.appendChild(note);
-  }
+if (!selectedProduct) return;
+const entered = normalize($('codeInput').value);
+const msg = $('msg');
+if (!entered) {
+msg.textContent = 'Введите код.';
+msg.className = 'msg show err';
+return;
 }
-
-/* ENTER для отправки */
-$('codeInput').addEventListener('keydown', function (e) {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    $('redeemBtn').click();
-  }
+if (entered.length < 8) {
+msg.textContent = 'Код слишком короткий. Проверьте ввод.';
+msg.className = 'msg show err';
+return;
+}
+const isValid = selectedProduct.codes.some(c => normalize(c) === entered);
+if (isValid) {
+msg.textContent = '✅ Код принят! Товар выдан ниже.';
+msg.className = 'msg show ok';
+$('result').querySelector('.result-title').textContent =
+selectedProduct.linkTitle || '🔗 Ссылка';
+renderResult(selectedProduct);
+$('result').classList.add('show');
+$('codeInput').disabled = true;
+this.disabled = true;
+setTimeout(() => $('result').scrollIntoView({ behavior:'smooth', block:'nearest' }), 60);
+} else {
+msg.textContent = '❌ Неверный код. Проверьте правильность и попробуйте снова.';
+msg.className = 'msg show err';
+$('result').classList.remove('show');
+}
 });
-
-/* =========================================================
-   ИНИЦИАЛИЗАЦИЯ
-   ========================================================= */
+function renderResult(product) {
+const body = $('resultBody');
+body.innerHTML = '';
+if (product.type === 'script') {
+const wrap = document.createElement('div');
+wrap.className = 'script-box';
+const pre = document.createElement('div');
+pre.className = 'script-code';
+pre.textContent = product.script;
+wrap.appendChild(pre);
+body.appendChild(wrap);
+const btnRow = document.createElement('div');
+btnRow.className = 'link-box';
+const spacer = document.createElement('div');
+spacer.style.flex = '1';
+spacer.style.fontSize = '.7rem';
+spacer.style.color = '#7b8aa2';
+spacer.textContent = 'Скрипт для копирования игр';
+const copyBtn = document.createElement('button');
+copyBtn.className = 'copy';
+copyBtn.textContent = 'Копировать';
+copyBtn.addEventListener('click', function () {
+navigator.clipboard.writeText(product.script).then(() => {
+const original = this.textContent;
+this.textContent = '✓ Скопировано';
+this.classList.add('done');
+setTimeout(() => {
+this.textContent = original;
+this.classList.remove('done');
+}, 1200);
+}).catch(() => {
+alert('Не удалось скопировать. Выделите текст скрипта вручную.');
+});
+});
+btnRow.appendChild(spacer);
+btnRow.appendChild(copyBtn);
+body.appendChild(btnRow);
+if (product.note) {
+const note = document.createElement('div');
+note.className = 'server-note';
+note.innerHTML = product.note;
+body.appendChild(note);
+}
+return;
+}
+const linkBox = document.createElement('div');
+linkBox.className = 'link-box';
+const a = document.createElement('a');
+a.href = product.link;
+a.target = '_blank';
+a.rel = 'noopener noreferrer';
+a.textContent = product.link;
+const copyBtn = document.createElement('button');
+copyBtn.className = 'copy';
+copyBtn.textContent = 'Копировать';
+copyBtn.addEventListener('click', function () {
+navigator.clipboard.writeText(product.link).then(() => {
+const original = this.textContent;
+this.textContent = '✓ Скопировано';
+this.classList.add('done');
+setTimeout(() => {
+this.textContent = original;
+this.classList.remove('done');
+}, 1200);
+}).catch(() => {
+const range = document.createRange();
+range.selectNodeContents(a);
+const sel = window.getSelection();
+sel.removeAllRanges();
+sel.addRange(range);
+this.textContent = 'Ctrl+C';
+setTimeout(() => { this.textContent = 'Копировать'; }, 1500);
+});
+});
+linkBox.appendChild(a);
+linkBox.appendChild(copyBtn);
+body.appendChild(linkBox);
+if (product.note) {
+const note = document.createElement('div');
+note.className = 'server-note';
+note.innerHTML = product.note;
+body.appendChild(note);
+}
+}
+$('codeInput').addEventListener('keydown', function (e) {
+if (e.key === 'Enter') {
+e.preventDefault();
+$('redeemBtn').click();
+}
+});
+// ЛОГИКА ТАЙМЕРА И ТЕХНИЧЕСКОГО ПЕРЕРЫВА (МСК)
+function initMaintenanceTimer() {
+function updateTimer() {
+// Получаем текущее время на устройстве пользователя
+const now = new Date();
+// Рассчитываем текущее время в часовом поясе Москвы (UTC+3)
+const mskOffset = 3 * 60; // МСК — это UTC+3 в минутах
+const localOffset = now.getTimezoneOffset(); // Смещение пользователя в минутах
+const mskTime = new Date(now.getTime() + (localOffset + mskOffset) * 60000);
+// Устанавливаем целевую точку: 24:00 (00:00 следующего дня) по Москве
+const target = new Date(mskTime);
+target.setHours(24, 0, 0, 0); // 24:00 текущих суток по МСК
+// Оставшееся время в миллисекундах
+const diff = target - mskTime;
+if (diff <= 0) {
+// Если время вышло, скрываем экран тех. перерыва и включаем сайт
+$('maintenanceOverlay').style.display = 'none';
+clearInterval(timerInterval);
+return;
+}
+// Если время еще есть, показываем окно тех. работы
+$('maintenanceOverlay').style.display = 'flex';
+// Расчет часов, минут и секунд
+const hours = Math.floor(diff / (1000 * 60 * 60));
+const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+// Выводим с ведущими нулями
+$('t-hours').textContent = String(hours).padStart(2, '0');
+$('t-mins').textContent = String(minutes).padStart(2, '0');
+$('t-secs').textContent = String(seconds).padStart(2, '0');
+}
+// Запускаем проверку каждую секунду
+const timerInterval = setInterval(updateTimer, 1000);
+updateTimer(); // Первый запуск сразу при загрузке страницы
+}
+initMaintenanceTimer();
 renderCatalog();
-</script>
-</body>
-</html>
