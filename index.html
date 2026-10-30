@@ -3,776 +3,158 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SwagaLorryShop — магазин по кодам</title>
+<title>Технический перерыв</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', Roboto, system-ui, sans-serif; }
-  :root {
-    --bg:#080a10;
-    --panel:rgba(18,22,32,.75);
-    --panel2:rgba(26,32,44,.7);
-    --border:rgba(255,255,255,.07);
-    --border-h:rgba(160,190,255,.35);
-    --txt:#eef2fa;
-    --muted:#8a97b0;
-    --accent:#7ea6ff;
-    --accent2:#a9bbff;
-    --ok:#3ddc97;
-    --bad:#ff5c7a;
-  }
-  html,body { height:100%; }
+
   body {
-    background:
-      radial-gradient(900px 600px at 10% -10%, rgba(120,150,255,.10), transparent 60%),
-      radial-gradient(800px 500px at 100% 0%, rgba(80,255,200,.05), transparent 55%),
-      var(--bg);
-    color:var(--txt);
     min-height:100vh;
-    padding:20px 18px 60px;
-  }
-
-  /* Стили для экрана тех. перерыва */
-  .maintenance-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: var(--bg);
-    background: radial-gradient(circle at center, rgba(20, 35, 65, 0.4) 0%, var(--bg) 70%);
-    z-index: 9999;
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 20px;
-    backdrop-filter: blur(8px);
-  }
-  .m-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 24px;
-    padding: 40px 30px;
-    max-width: 500px;
-    width: 100%;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-  }
-  .m-icon { font-size: 3.5rem; margin-bottom: 15px; animation: pulse 2s infinite ease-in-out; }
-  .m-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; color: #fff; }
-  .m-text { font-size: 0.95rem; color: var(--muted); margin-bottom: 25px; line-height: 1.5; }
-  .m-timer {
-    display: flex; justify-content: center; gap: 12px;
-  }
-  .t-item {
-    background: var(--panel2);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    min-width: 75px; padding: 12px 5px;
-  }
-  .t-num { font-size: 1.8rem; font-weight: 700; color: var(--accent); font-family: monospace; }
-  .t-lbl { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; margin-top: 2px; letter-spacing: 0.5px; }
-
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.9; }
-    50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 15px rgba(126,166,255,0.4)); }
-  }
-
-  .header {
-    max-width:1180px;
-    margin:0 auto 22px;
     display:flex;
     align-items:center;
-    gap:16px;
-    flex-wrap:wrap;
-  }
-  .logo {
-    display:flex; align-items:center; gap:10px;
-    font-size:1.4rem; font-weight:800; letter-spacing:.3px;
-  }
-  .logo .g { font-size:1.7rem; filter:drop-shadow(0 0 14px rgba(200,215,255,.8)); }
-
-  .layout {
-    max-width:1180px;
-    margin:0 auto;
-    display:grid;
-    grid-template-columns: 1fr 340px;
-    gap:20px;
-    align-items:start;
-  }
-  @media (max-width:860px) {
-    .layout { grid-template-columns: 1fr; }
+    justify-content:center;
+    background:
+      radial-gradient(900px 600px at 10% -10%, rgba(120,150,255,.12), transparent 60%),
+      radial-gradient(800px 500px at 100% 0%, rgba(80,255,200,.06), transparent 55%),
+      #080a10;
+    color:#eef2fa;
+    padding:24px;
   }
 
-  .catalog {
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:20px;
-    padding:20px;
-    backdrop-filter:blur(12px);
-  }
-  .catalog-head {
-    display:flex; align-items:baseline; justify-content:space-between;
-    gap:10px; margin-bottom:16px; flex-wrap:wrap;
-  }
-  .catalog-head h2 { font-size:1.15rem; font-weight:700; }
-  .catalog-head .count {
-    font-size:.78rem; color:var(--muted);
-    background:rgba(255,255,255,.04);
-    border:1px solid var(--border);
-    padding:4px 12px; border-radius:999px;
-  }
-
-  .products {
-    display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap:12px;
-  }
-
-  .product-card {
-    position:relative;
-    background: var(--panel2);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:14px 12px 12px;
-    cursor:pointer;
-    transition: transform .15s, border-color .15s, background .15s, box-shadow .15s;
-    display:flex; flex-direction:column;
-    min-height:150px;
-  }
-  .product-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--border-h);
-    background: rgba(34,42,58,.85);
-    box-shadow: 0 10px 26px -12px rgba(120,160,255,.35);
-  }
-  .product-card.active {
-    border-color: rgba(126,166,255,.7);
-    background: rgba(40,54,84,.85);
-    box-shadow: 0 0 0 1px rgba(126,166,255,.4), 0 12px 30px -14px rgba(120,160,255,.5);
-  }
-  .product-card .p-icon {
-    width:46px; height:46px; border-radius:12px;
-    display:grid; place-items:center;
-    font-size:24px;
-    background: radial-gradient(circle at 40% 35%, rgba(200,215,255,.3), rgba(255,255,255,.02));
-    border:1px solid rgba(200,215,255,.15);
-    margin-bottom:10px;
-    flex-shrink:0;
-  }
-  .product-card .p-name {
-    font-size:.88rem; font-weight:700; color:#fff;
-    line-height:1.3; margin-bottom:4px;
-  }
-  .product-card .p-desc {
-    font-size:.7rem; color:var(--muted); line-height:1.45;
-    flex:1;
-  }
-  .product-card .p-badge {
-    margin-top:8px;
-    align-self:flex-start;
-    font-size:.62rem; font-weight:700;
-    text-transform:uppercase; letter-spacing:.6px;
-    padding:3px 9px; border-radius:999px;
-    background:rgba(126,166,255,.14);
-    color:var(--accent);
-    border:1px solid rgba(126,166,255,.28);
-  }
-
-  .sidebar {
-    background:var(--panel);
-    border:1px solid var(--border);
-    border-radius:20px;
-    padding:20px;
-    backdrop-filter:blur(12px);
-    position:sticky;
-    top:20px;
-  }
-  .side-head {
-    font-size:.7rem; text-transform:uppercase; letter-spacing:1.4px;
-    color:var(--muted); font-weight:700; margin-bottom:14px;
-  }
-
-  .empty-state {
-    text-align:center; padding:26px 10px;
-    color:var(--muted); font-size:.85rem; line-height:1.6;
-  }
-  .empty-state .icon { font-size:2.4rem; display:block; margin-bottom:10px; opacity:.55; }
-
-  .selected-product {
-    display:flex; align-items:center; gap:12px;
-    background:rgba(255,255,255,.03);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:12px;
-    margin-bottom:14px;
-  }
-  .selected-product .s-icon {
-    width:44px; height:44px; border-radius:11px;
-    display:grid; place-items:center; font-size:22px;
-    background: radial-gradient(circle at 40% 35%, rgba(200,215,255,.3), rgba(255,255,255,.02));
-    border:1px solid rgba(200,215,255,.15);
-    flex-shrink:0;
-  }
-  .selected-product .s-name { font-size:.9rem; font-weight:700; color:#fff; line-height:1.3; }
-  .selected-product .s-sub  { font-size:.72rem; color:var(--muted); margin-top:2px; }
-
-  .desc-title {
-    font-size:.7rem; letter-spacing:1.2px; text-transform:uppercase;
-    color:var(--muted); font-weight:700; margin-bottom:7px;
-  }
-  .desc-box {
-    background:rgba(255,255,255,.03);
-    border:1px solid var(--border);
-    border-radius:11px;
-    padding:12px 13px;
-    font-size:.8rem;
-    line-height:1.6;
-    color:#c4d2e6;
-    margin-bottom:14px;
-  }
-  .desc-box b { color:#fff; }
-  .desc-box .hl { color:var(--accent2); font-weight:600; }
-  .desc-box .warn { color:#ff8fa3; font-weight:700; }
-  .desc-box ol { margin:8px 0 0 18px; padding:0; }
-  .desc-box ol li { margin-bottom:4px; }
-
-  .field-label {
-    font-size:.68rem; letter-spacing:1.2px; text-transform:uppercase;
-    color:#7b8aa2; font-weight:700; margin-bottom:7px;
-  }
-  .code-input {
+  .card {
     width:100%;
-    padding:13px 12px;
-    border-radius:11px;
-    background:#0c1019;
-    border:1px solid #2a3444;
-    color:#dbe6ff;
-    font-family: ui-monospace, Consolas, monospace;
-    font-size:.95rem;
-    letter-spacing:2px;
+    max-width:440px;
+    background: linear-gradient(180deg, rgba(26,32,44,.92), rgba(14,18,26,.95));
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:20px;
+    padding:30px 26px;
     text-align:center;
-    text-transform:uppercase;
-    outline:none;
-    transition:.2s;
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(126,166,255,.08);
   }
-  .code-input::placeholder { color:#4d586d; letter-spacing:1px; font-size:.78rem; }
-  .code-input:focus {
-    border-color: rgba(120,160,255,.6);
-    box-shadow: 0 0 0 3px rgba(120,160,255,.1);
-  }
-  .code-input:disabled { opacity:.5; cursor:not-allowed; }
 
-  .btn {
-    width:100%;
-    margin-top:12px;
-    padding:13px;
-    border-radius:12px;
-    border:none;
-    cursor:pointer;
-    font-family:inherit;
-    font-size:.95rem;
-    font-weight:700;
-    color:#0a0d15;
-    background: linear-gradient(135deg, #dfe6ff, #a9bbff);
-    box-shadow: 0 8px 22px -6px rgba(169,187,255,.45);
-    transition:.15s;
+  .icon {
+    font-size:2.6rem;
+    line-height:1;
+    margin-bottom:14px;
+    filter: drop-shadow(0 0 18px rgba(126,166,255,.5));
   }
-  .btn:hover { box-shadow: 0 10px 28px -6px rgba(169,187,255,.6); }
-  .btn:active { transform: scale(.98); }
-  .btn:disabled { opacity:.45; cursor:not-allowed; box-shadow:none; }
 
-  .msg {
-    display:none;
-    margin-top:12px;
-    padding:11px 13px;
-    border-radius:10px;
-    font-size:.8rem;
-    line-height:1.5;
-  }
-  .msg.show { display:block; animation: fade .25s ease; }
-  .msg.err {
-    background: rgba(255,92,122,.1);
-    border:1px solid rgba(255,92,122,.35);
-    color:#ffb3c1;
-  }
-  .msg.ok {
-    background: rgba(61,220,151,.1);
-    border:1px solid rgba(61,220,151,.35);
-    color:#a8f5cf;
-  }
-  @keyframes fade { from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
-
-  .result {
-    display:none;
-    margin-top:14px;
-    padding:14px;
-    border-radius:13px;
-    background: rgba(61,220,151,.07);
-    border:1px solid rgba(61,220,151,.3);
-  }
-  .result.show { display:block; animation: fade .3s ease; }
-  .result-title {
-    font-size:.68rem; letter-spacing:1.2px; text-transform:uppercase;
-    color:#7fd8b0; font-weight:700; margin-bottom:9px;
-  }
-  .link-box {
-    display:flex; gap:8px; align-items:center;
-    background:#0a1119;
-    border:1px solid #24384c;
-    border-radius:10px;
-    padding:10px 11px;
+  h1 {
+    font-size:1.2rem;
+    font-weight:800;
     margin-bottom:8px;
+    letter-spacing:.3px;
   }
-  .link-box a {
+
+  p {
+    font-size:.82rem;
+    color:#8a97b0;
+    line-height:1.6;
+    margin-bottom:22px;
+  }
+  p b { color:#dbe6ff; }
+
+  .countdown {
+    display:flex;
+    justify-content:center;
+    gap:8px;
+  }
+
+  .unit {
     flex:1;
-    font-family: ui-monospace, Consolas, monospace;
-    font-size:.65rem;
-    color:#8cb4ff;
-    text-decoration:none;
-    word-break:break-all;
-    line-height:1.4;
+    max-width:96px;
+    background:#0b1018;
+    border:1px solid #263243;
+    border-radius:13px;
+    padding:12px 4px;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
   }
-  .link-box a:hover { color:#b7d0ff; text-decoration:underline; }
-  .copy {
-    padding:7px 10px;
-    border-radius:8px;
-    border:1px solid #354c68;
-    background:#1d2938;
-    color:#c8dcff;
-    font-size:.66rem;
-    font-weight:600;
-    cursor:pointer;
-font-family:inherit;
-white-space:nowrap;
-transition:.15s;
-flex-shrink:0;
-}
-.copy:hover { background:#2a3b52; }
-.copy.done { background:rgba(61,220,151,.2); border-color:rgba(61,220,151,.5); color:#a8f5cf; }
-.server-note {
-font-size:.7rem;
-color:#7b8aa2;
-line-height:1.5;
-}
-.server-note b { color:#c8d8f0; }
-.server-note ol { margin:6px 0 0 16px; padding:0; }
-.server-note ol li { margin-bottom:3px; }
-.script-box {
-background:#0a0f18;
-border:1px solid #24384c;
-border-radius:10px;
-padding:12px;
-margin-bottom:8px;
-}
-.script-code {
-font-family: ui-monospace, Consolas, monospace;
-font-size:.7rem;
-color:#a8e0ff;
-white-space:pre-wrap;
-word-break:break-word;
-line-height:1.5;
-max-height:260px;
-overflow:auto;
-}
-.script-code::-webkit-scrollbar { width:6px; }
-.script-code::-webkit-scrollbar-thumb { background:#354c68; border-radius:3px; }
-.footer {
-max-width:1180px;
-margin:28px auto 0;
-text-align:center;
-font-size:.72rem;
-color:#59647a;
-line-height:1.6;
-}
 
+  .num {
+    font-family: ui-monospace, Consolas, monospace;
+    font-size:1.65rem;
+    font-weight:700;
+    color:#dbe6ff;
+    font-variant-numeric: tabular-nums;
+    line-height:1;
+  }
 
-🛠️
-Технический перерыв
-Мы обновляем системы для улучшения стабильности. Сайт возобновит свою работу автоматически через:
+  .lbl {
+    font-size:.58rem;
+    text-transform:uppercase;
+    letter-spacing:1.2px;
+    color:#6b7a92;
+    font-weight:700;
+  }
 
-00Часов
-00Минут
-00Секунд
+  .done {
+    font-size:1.1rem;
+    font-weight:800;
+    color:#3ddc97;
+  }
 
+  @media (max-width:420px) {
+    .num { font-size:1.3rem; }
+    .card { padding:24px 18px; }
+  }
+</style>
+</head>
+<body>
 
-👻 SwagaLorryShop
-Товары
-0 товаров
+<div class="card">
+  <div class="icon">🛠️</div>
+  <h1>Технический перерыв</h1>
+  <p>Мы вернёмся в <b>24:00 по МСК</b>.</p>
 
+  <div class="countdown" id="countdown">
+    <div class="unit"><span class="num" id="cdHours">00</span><span class="lbl">часов</span></div>
+    <div class="unit"><span class="num" id="cdMinutes">00</span><span class="lbl">минут</span></div>
+    <div class="unit"><span class="num" id="cdSeconds">00</span><span class="lbl">секунд</span></div>
+  </div>
+</div>
 
-Покупка
+<script>
+  const H = document.getElementById('cdHours');
+  const M = document.getElementById('cdMinutes');
+  const S = document.getElementById('cdSeconds');
+  const BOX = document.getElementById('countdown');
 
-🛒
-Выберите товар слева,
-чтобы получить его по коду.
+  // Текущее время по Москве (UTC+3)
+  function getMoscowNow() {
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    return new Date(utc + 3 * 3600000);
+  }
 
+  // Ближайшие 24:00 по МСК
+  function getTargetTime() {
+    const msk = getMoscowNow();
+    const target = new Date(msk);
+    target.setHours(24, 0, 0, 0);
+    return target;
+  }
 
+  const target = getTargetTime();
+  const pad = n => String(n).padStart(2, '0');
 
-👻
+  function tick() {
+    const diff = target.getTime() - getMoscowNow().getTime();
 
-—
-—
+    if (diff <= 0) {
+      clearInterval(timer);
+      BOX.innerHTML = '<div class="done">✅ Время вышло</div>';
+      return;
+    }
 
+    const totalSec = Math.floor(diff / 1000);
+    H.textContent = pad(Math.floor(totalSec / 3600));
+    M.textContent = pad(Math.floor((totalSec % 3600) / 60));
+    S.textContent = pad(totalSec % 60);
+  }
 
-Описание
-—
-Введите ваш код
-
-Получить
-
-
-🔗 Ссылка на сервер раздачи
-
-
-
-
-SwagaLorryShop · выдача товаров по кодам · раздача по расписанию
-const PRODUCTS = [
-{
-id: 'white-ghost',
-icon: '👻',
-name: 'Белый призрак',
-desc: 'Белый призрак на плечо',
-fullDesc: 'Товар: белый призрак на плечо. ' +
-'После оплаты вы получаете ссылку на сервер — заходите и получаете белого призрака. ' +
-'Раздача происходит в 18:00, 19:00, 20:00. ' +
-'Всё остальное время на сервере нет раздачи.',
-badge: 'Код-товар',
-type: 'link',
-link: 'roblox.com',
-linkTitle: '🔗 Ссылка на сервер раздачи',
-note: 'Заходите на сервер в часы раздачи: 18:00, 19:00, 20:00.
-В остальное время раздача закрыта.',
-codes: ['GHST-7K2M-9QW4-RT5Y']
-},
-{
-id: 'pack-2000',
-icon: '🎮',
-name: 'Пак 2000+ игр',
-desc: 'Пак 2000+ игр для Roblox Studio',
-fullDesc: 'Товар: пак 2000+ игр. ' +
-'После ввода кода вы получаете ссылку на архив с .rbxl файлами. ' +
-'Как открыть:',
-badge: 'Архив',
-type: 'link',
-link: 'mega.nz',
-linkTitle: '📦 Ссылка на пак 2000+ игр',
-note: 'Как открыть файл:' +
-'' +
-'В Roblox Studio нажмите Файл → Открыть из файла
-(File → Open from File).' +
-'Выберите ваш .rbxl файл.' +
-'',
-codes: ['PACK-8N4V-2XJ6-LM3Z']
-},
-{
-id: 'plugins-30',
-icon: '🧩',
-name: '30 платных плагинов',
-desc: '30 платных, нужных плагинов',
-fullDesc: 'Товар: 30 платных, нужных плагинов. ' +
-'После ввода кода вы получаете ссылку на архив с плагинами на Google Drive.',
-badge: 'Плагины',
-type: 'link',
-link: 'google.com',
-linkTitle: '🧩 Ссылка на 30 платных плагинов',
-note: 'Скачайте архив по ссылке и установите плагины в Roblox Studio через Plugins → Manage Plugins или перетащите .rbxm файлы в папку Plugins.',
-codes: ['PLUG-3K9M-7QX2-VN4B']
-},
-{
-id: 'copy-script',
-icon: '📋',
-name: 'Скрипт для копирования игр',
-desc: 'Копирует GUI и карту',
-fullDesc: 'ВНИМАНИЕ!!! Скрипт не копирует скрипты, такие как серверная логика.
-' +
-'Копирует: GUI, карту.
-
-' +
-'Товар: скрипт для копирования игр (SynSaveInstance).',
-badge: 'Скрипт',
-type: 'script',
-linkTitle: '📜 Ваш скрипт',
-note: 'Вставьте скрипт в executor в игре, которую хотите скопировать. ' +
-'Внимание: скрипты (серверная логика) не копируются — только GUI и карта.',
-script:
-`local Params = {
-RepoURL = "githubusercontent.com",
-SSI = "saveinstance",
-}
-local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()
-local Options = {} -- Documentation here github.io
-synsaveinstance(Options)`,
-codes: ['COPY-5R8T-3WY7-NQ2M']
-},
-{
-id: 'gta5-map',
-icon: '🗺️',
-name: 'Карта GTA 5',
-desc: 'Карта GTA 5',
-fullDesc: 'Товар: карта GTA 5. ' +
-'После ввода кода вы получаете ссылку на файл с картой на Google Drive.',
-badge: 'Карта',
-type: 'link',
-link: 'google.com',
-linkTitle: '🗺️ Ссылка на карту GTA 5',
-note: 'Скачайте файл по ссылке и используйте карту в своей игре или проекте.',
-codes: ['GTA5-MAP-7K3Q']
-},
-{
-id: 'krasnoyarsk-winter',
-icon: '❄️',
-name: 'Красноярск зима',
-desc: 'Карта, скрипты, системы, зимнее обновление',
-fullDesc: 'В данный товар входит:
-' +
-'' +
-'Карта' +
-'Скрипты' +
-'Все системы' +
-'Зимнее обновление' +
-'
-' +
-'После ввода кода вы получаете ссылку на архив с проектом на Mega.nz.',
-badge: 'Проект',
-type: 'link',
-link: 'mega.nz',
-linkTitle: '❄️ Ссылка на «Красноярск зима»',
-note: 'Скачайте архив по ссылке и распакуйте. Внутри — карта, скрипты, все системы и зимнее обновление.',
-codes: ['KRSK-WNTR-2025-XQ7M']
-},
-{
-id: 'bakhmut-trenches',
-icon: '🪖',
-name: 'Карта Бахмут + окопы',
-desc: 'Реалистичная карта войны с окопами',
-fullDesc: 'Очень красивая реалистичная карта войны с окопами.
-' +
-'Подходит для РП или для шутеров.
-
-' +
-'После ввода кода вы получаете ссылку на файл с картой на Mega.nz.',
-badge: 'Карта',
-type: 'link',
-link: 'mega.nz',
-linkTitle: '🪖 Ссылка на карту «Бахмут + окопы»',
-note: 'Скачайте файл по ссылке и используйте карту в своей РП-игре или шутере.',
-codes: ['BHMUT-TRNC-2025-WR8K']
-}
-];
-let selectedProduct = null;
-function normalize(s) {
-return String(s).toUpperCase().replace(/[^A-Z0-9]/g, '');
-}
-function $(id) { return document.getElementById(id); }
-function renderCatalog() {
-const grid = $('productGrid');
-grid.innerHTML = '';
-$('productCount').textContent = PRODUCTS.length + ' ' + plural(PRODUCTS.length, 'товар', 'товара', 'товаров');
-PRODUCTS.forEach(p => {
-const card = document.createElement('div');
-card.className = 'product-card';
-card.dataset.id = p.id;
-card.innerHTML = <div class="p-icon">${p.icon}</div> <div class="p-name">${escapeHtml(p.name)}</div> <div class="p-desc">${escapeHtml(p.desc)}</div> ${p.badge ?${escapeHtml(p.badge)}: ''};
-card.addEventListener('click', () => selectProduct(p.id));
-grid.appendChild(card);
-});
-}
-function plural(n, one, few, many) {
-const mod10 = n % 10, mod100 = n % 100;
-if (mod10 === 1 && mod100 !== 11) return one;
-if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
-return many;
-}
-function escapeHtml(str) {
-return String(str).replace(/[&<>"']/g, m => ({
-'&':'&','<':'<','>':'>','"':'"',"'":'''
-}[m]));
-}
-function selectProduct(id) {
-const product = PRODUCTS.find(p => p.id === id);
-if (!product) return;
-selectedProduct = product;
-document.querySelectorAll('.product-card').forEach(c => {
-c.classList.toggle('active', c.dataset.id === id);
-});
-$('emptyState').style.display = 'none';
-$('purchasePanel').style.display = 'block';
-$('selIcon').textContent = product.icon;
-$('selName').textContent = product.name;
-$('selSub').textContent = product.desc;
-$('descBox').innerHTML = product.fullDesc || product.desc || '—';
-resetPurchaseUI();
-}
-function resetPurchaseUI() {
-const input = $('codeInput');
-input.value = '';
-input.disabled = false;
-$('redeemBtn').disabled = false;
-$('msg').className = 'msg';
-$('msg').textContent = '';
-$('result').classList.remove('show');
-$('resultBody').innerHTML = '';
-$('result').querySelector('.result-title').textContent = '🔗 Ссылка';
-}
-$('codeInput').addEventListener('input', function () {
-let raw = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 16);
-const parts = [];
-for (let i = 0; i < raw.length; i += 4) parts.push(raw.substring(i, i + 4));
-this.value = parts.join('-');
-});
-$('redeemBtn').addEventListener('click', function () {
-if (!selectedProduct) return;
-const entered = normalize($('codeInput').value);
-const msg = $('msg');
-if (!entered) {
-msg.textContent = 'Введите код.';
-msg.className = 'msg show err';
-return;
-}
-if (entered.length < 8) {
-msg.textContent = 'Код слишком короткий. Проверьте ввод.';
-msg.className = 'msg show err';
-return;
-}
-const isValid = selectedProduct.codes.some(c => normalize(c) === entered);
-if (isValid) {
-msg.textContent = '✅ Код принят! Товар выдан ниже.';
-msg.className = 'msg show ok';
-$('result').querySelector('.result-title').textContent =
-selectedProduct.linkTitle || '🔗 Ссылка';
-renderResult(selectedProduct);
-$('result').classList.add('show');
-$('codeInput').disabled = true;
-this.disabled = true;
-setTimeout(() => $('result').scrollIntoView({ behavior:'smooth', block:'nearest' }), 60);
-} else {
-msg.textContent = '❌ Неверный код. Проверьте правильность и попробуйте снова.';
-msg.className = 'msg show err';
-$('result').classList.remove('show');
-}
-});
-function renderResult(product) {
-const body = $('resultBody');
-body.innerHTML = '';
-if (product.type === 'script') {
-const wrap = document.createElement('div');
-wrap.className = 'script-box';
-const pre = document.createElement('div');
-pre.className = 'script-code';
-pre.textContent = product.script;
-wrap.appendChild(pre);
-body.appendChild(wrap);
-const btnRow = document.createElement('div');
-btnRow.className = 'link-box';
-const spacer = document.createElement('div');
-spacer.style.flex = '1';
-spacer.style.fontSize = '.7rem';
-spacer.style.color = '#7b8aa2';
-spacer.textContent = 'Скрипт для копирования игр';
-const copyBtn = document.createElement('button');
-copyBtn.className = 'copy';
-copyBtn.textContent = 'Копировать';
-copyBtn.addEventListener('click', function () {
-navigator.clipboard.writeText(product.script).then(() => {
-const original = this.textContent;
-this.textContent = '✓ Скопировано';
-this.classList.add('done');
-setTimeout(() => {
-this.textContent = original;
-this.classList.remove('done');
-}, 1200);
-}).catch(() => {
-alert('Не удалось скопировать. Выделите текст скрипта вручную.');
-});
-});
-btnRow.appendChild(spacer);
-btnRow.appendChild(copyBtn);
-body.appendChild(btnRow);
-if (product.note) {
-const note = document.createElement('div');
-note.className = 'server-note';
-note.innerHTML = product.note;
-body.appendChild(note);
-}
-return;
-}
-const linkBox = document.createElement('div');
-linkBox.className = 'link-box';
-const a = document.createElement('a');
-a.href = product.link;
-a.target = '_blank';
-a.rel = 'noopener noreferrer';
-a.textContent = product.link;
-const copyBtn = document.createElement('button');
-copyBtn.className = 'copy';
-copyBtn.textContent = 'Копировать';
-copyBtn.addEventListener('click', function () {
-navigator.clipboard.writeText(product.link).then(() => {
-const original = this.textContent;
-this.textContent = '✓ Скопировано';
-this.classList.add('done');
-setTimeout(() => {
-this.textContent = original;
-this.classList.remove('done');
-}, 1200);
-}).catch(() => {
-const range = document.createRange();
-range.selectNodeContents(a);
-const sel = window.getSelection();
-sel.removeAllRanges();
-sel.addRange(range);
-this.textContent = 'Ctrl+C';
-setTimeout(() => { this.textContent = 'Копировать'; }, 1500);
-});
-});
-linkBox.appendChild(a);
-linkBox.appendChild(copyBtn);
-body.appendChild(linkBox);
-if (product.note) {
-const note = document.createElement('div');
-note.className = 'server-note';
-note.innerHTML = product.note;
-body.appendChild(note);
-}
-}
-$('codeInput').addEventListener('keydown', function (e) {
-if (e.key === 'Enter') {
-e.preventDefault();
-$('redeemBtn').click();
-}
-});
-// ЛОГИКА ТАЙМЕРА И ТЕХНИЧЕСКОГО ПЕРЕРЫВА (МСК)
-function initMaintenanceTimer() {
-function updateTimer() {
-// Получаем текущее время на устройстве пользователя
-const now = new Date();
-// Рассчитываем текущее время в часовом поясе Москвы (UTC+3)
-const mskOffset = 3 * 60; // МСК — это UTC+3 в минутах
-const localOffset = now.getTimezoneOffset(); // Смещение пользователя в минутах
-const mskTime = new Date(now.getTime() + (localOffset + mskOffset) * 60000);
-// Устанавливаем целевую точку: 24:00 (00:00 следующего дня) по Москве
-const target = new Date(mskTime);
-target.setHours(24, 0, 0, 0); // 24:00 текущих суток по МСК
-// Оставшееся время в миллисекундах
-const diff = target - mskTime;
-if (diff <= 0) {
-// Если время вышло, скрываем экран тех. перерыва и включаем сайт
-$('maintenanceOverlay').style.display = 'none';
-clearInterval(timerInterval);
-return;
-}
-// Если время еще есть, показываем окно тех. работы
-$('maintenanceOverlay').style.display = 'flex';
-// Расчет часов, минут и секунд
-const hours = Math.floor(diff / (1000 * 60 * 60));
-const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-// Выводим с ведущими нулями
-$('t-hours').textContent = String(hours).padStart(2, '0');
-$('t-mins').textContent = String(minutes).padStart(2, '0');
-$('t-secs').textContent = String(seconds).padStart(2, '0');
-}
-// Запускаем проверку каждую секунду
-const timerInterval = setInterval(updateTimer, 1000);
-updateTimer(); // Первый запуск сразу при загрузке страницы
-}
-initMaintenanceTimer();
-renderCatalog();
+  tick();
+  const timer = setInterval(tick, 1000);
+</script>
+</body>
+</html>
